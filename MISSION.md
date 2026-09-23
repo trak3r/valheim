@@ -15,6 +15,7 @@ I want to create a suite of single-purpose Valheim mods.
 - everything floats. items dropped in the water don't sink.
 - kilns, smelters, furnaces fuel from nearby chests. example, kilns need wood. if there's a chest *very* close by containing wood, it will fuel itself. ditto smeltes and furnaces with coal. stress the chest needs to be *real* close so general storage isn't inadvertenly consumed.
 - kilns, smelters, furnaces fuel from nearby ground. example, if i drop a stack of wood in from of a kiln, it should suck it up and start producing coal. this should allow a sort of assembly line set-up where a kiln spits out coal near a smelter which then pulls in the coal, etc.
+- auto eat. when a food buff runs completely out, if the same food exists in the player's inventory, eat it. no harvesting, no filling empty slots with "best" food, no config kitchen sink — just refill expired buffs from inventory stacks.
 
 # Plan
 

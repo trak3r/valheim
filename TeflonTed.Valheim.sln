@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.FuelFromChests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.FuelFromGround", "mods\FuelFromGround\TeflonTed.FuelFromGround.csproj", "{A1000009-0000-4000-8000-000000000009}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.AutoEat", "mods\AutoEat\TeflonTed.AutoEat.csproj", "{A100000A-0000-4000-8000-00000000000A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,5 +64,9 @@ Global
 		{A1000009-0000-4000-8000-000000000009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1000009-0000-4000-8000-000000000009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1000009-0000-4000-8000-000000000009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A100000A-0000-4000-8000-00000000000A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A100000A-0000-4000-8000-00000000000A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A100000A-0000-4000-8000-00000000000A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A100000A-0000-4000-8000-00000000000A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

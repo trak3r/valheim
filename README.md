@@ -12,6 +12,7 @@ Personal suite of single-purpose Valheim mods. Each mod does one thing. Minimal 
 | [Everything Floats](mods/EverythingFloats) | Dropped items float on water instead of sinking |
 | [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / furnaces pull from chests within ~2.5m (auto + manual E) |
 | [Fuel From Ground](mods/FuelFromGround) | Same machines suck fuel item-drops within ~2.5m (assembly lines) |
+| [Auto Eat](mods/AutoEat) | When a food buff fully expires, re-eat the same food from inventory if you still have it |
 
 Shared helpers live in [`common/TeflonTed.Common`](common/TeflonTed.Common).
 
