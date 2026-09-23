@@ -43,6 +43,22 @@ Shared helpers live in [`common/TeflonTed.Common`](common/TeflonTed.Common).
 
    Mods that use the shared library also get `TeflonTed.Common.dll` in the same folder.
 
+## Launch from this folder
+
+Double-click [`Launch-Valheim.bat`](Launch-Valheim.bat) (Windows). It:
+
+1. Reads `VALHEIM_INSTALL` from `Environment.props`
+2. Builds + deploys all mods (`Release`)
+3. Starts `valheim.exe` from that install (BepInEx Doorstop loads whatever is in `plugins`)
+
+Skip the build when you just want to play:
+
+```bat
+Launch-Valheim.bat -SkipBuild
+```
+
+You can also pin a Windows shortcut to `Launch-Valheim.bat` on the taskbar/desktop; keep the shortcut’s “Start in” as this repo folder (the `.bat` already `cd`s to itself).
+
 `BepInEx.AssemblyPublicizer.MSBuild` publicizes `assembly_valheim` (and related) at compile time so patches can reach normally-private game members. You do not need to run a separate publicizer tool.
 
 ## Install without building
