@@ -7,6 +7,7 @@ namespace TeflonTed.Common
     {
         /// <summary>
         /// Find player-accessible containers within <paramref name="radius"/> of <paramref name="center"/>.
+        /// Includes Obliterator (Incinerator) inventories, which are easy to miss via physics alone.
         /// </summary>
         public static List<Container> Find(Vector3 center, float radius)
         {
@@ -18,6 +19,48 @@ namespace TeflonTed.Common
             }
 
             long playerId = player.GetPlayerID();
+            float radiusSq = radius * radius;
+
+            void TryAdd(Container container)
+            {
+                if (container == null || result.Contains(container))
+                {
+                    return;
+                }
+
+                if ((container.transform.position - center).sqrMagnitude > radiusSq &&
+                    (container.transform.root.position - center).sqrMagnitude > radiusSq)
+                {
+                    return;
+                }
+
+                var nview = container.GetComponent<ZNetView>() ??
+                            container.GetComponentInParent<ZNetView>();
+                if (nview == null || !nview.IsValid())
+                {
+                    return;
+                }
+
+                if (container.GetInventory() == null)
+                {
+                    return;
+                }
+
+                if (!container.CheckAccess(playerId))
+                {
+                    return;
+                }
+
+                if (container.m_checkGuardStone &&
+                    !PrivateArea.CheckAccess(container.transform.position, 0f, flash: false, wardCheck: false))
+                {
+                    return;
+                }
+
+                result.Add(container);
+            }
+
+            // Normal chests / pieces via physics.
             var hits = Physics.OverlapSphere(center, Mathf.Max(radius, 0f), LayerMask.GetMask("piece"));
             foreach (var hit in hits)
             {
@@ -26,44 +69,22 @@ namespace TeflonTed.Common
                     continue;
                 }
 
-                var container = hit.GetComponentInParent<Container>();
-                if (container == null)
-                {
-                    // Some pieces (e.g. Obliterator) put Container on a child of the collider.
-                    container = hit.GetComponentInChildren<Container>();
-                }
+                var container = hit.GetComponentInParent<Container>() ??
+                                hit.GetComponentInChildren<Container>();
+                TryAdd(container);
+            }
 
-                if (container == null)
+            // Obliterator: Incinerator holds a Container reference that OverlapSphere often misses.
+            foreach (var incinerator in Object.FindObjectsOfType<Incinerator>())
+            {
+                if (incinerator == null)
                 {
                     continue;
                 }
 
-                var nview = container.GetComponent<ZNetView>();
-                if (nview == null || !nview.IsValid())
-                {
-                    continue;
-                }
-
-                if (container.GetInventory() == null)
-                {
-                    continue;
-                }
-
-                if (!container.CheckAccess(playerId))
-                {
-                    continue;
-                }
-
-                if (container.m_checkGuardStone &&
-                    !PrivateArea.CheckAccess(container.transform.position, 0f, flash: false, wardCheck: false))
-                {
-                    continue;
-                }
-
-                if (!result.Contains(container))
-                {
-                    result.Add(container);
-                }
+                TryAdd(incinerator.m_container);
+                TryAdd(incinerator.GetComponent<Container>());
+                TryAdd(incinerator.GetComponentInChildren<Container>());
             }
 
             return result;
