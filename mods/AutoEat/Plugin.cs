@@ -75,7 +75,7 @@ namespace TeflonTed.AutoEat
 
             foreach (string sharedName in Expiring)
             {
-                var item = inventory.GetItem(sharedName, -1, matchWorldLevel: true);
+                var item = inventory.GetItem(sharedName, -1, isPrefabName: false);
                 if (item == null)
                 {
                     continue;
