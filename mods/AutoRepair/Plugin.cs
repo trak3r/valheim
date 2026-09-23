@@ -21,14 +21,16 @@ namespace TeflonTed.AutoRepair
     }
 
     /// <summary>
-    /// When a crafting station UI is open, repair every equipped item that station can repair.
-    /// Uses the same eligibility rules as the vanilla repair button (via InventoryGui.CanRepair).
+    /// When a crafting station UI is open, repair every damaged inventory item that
+    /// station can repair — same eligibility as the vanilla repair hammer button.
     /// </summary>
     [HarmonyPatch(typeof(InventoryGui), "UpdateRepair")]
     internal static class InventoryGui_UpdateRepair_Patch
     {
         private static readonly MethodInfo CanRepairMethod =
             AccessTools.Method(typeof(InventoryGui), "CanRepair", new[] { typeof(ItemDrop.ItemData) });
+
+        private static readonly List<ItemDrop.ItemData> WornItems = new List<ItemDrop.ItemData>();
 
         private static void Prefix(InventoryGui __instance)
         {
@@ -39,7 +41,13 @@ namespace TeflonTed.AutoRepair
             }
 
             var station = player.GetCurrentCraftingStation();
-            if (station == null)
+            if (station == null || !station.m_canRepair)
+            {
+                return;
+            }
+
+            // Match vanilla RepairOneItem: require a usable station (e.g. forge needs fire).
+            if (!station.CheckUsable(player, false))
             {
                 return;
             }
@@ -50,15 +58,13 @@ namespace TeflonTed.AutoRepair
                 return;
             }
 
-            int repaired = 0;
-            foreach (ItemDrop.ItemData item in inv.GetAllItems())
-            {
-                if (item == null || !item.m_equipped || !item.m_shared.m_useDurability)
-                {
-                    continue;
-                }
+            WornItems.Clear();
+            inv.GetWornItems(WornItems);
 
-                if (item.m_durability >= item.GetMaxDurability())
+            int repaired = 0;
+            foreach (ItemDrop.ItemData item in WornItems)
+            {
+                if (item == null)
                 {
                     continue;
                 }
