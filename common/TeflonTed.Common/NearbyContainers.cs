@@ -111,7 +111,7 @@ namespace TeflonTed.Common
                 }
 
                 int remove = Mathf.Min(have, remaining);
-                inv.RemoveItem(sharedName, remove, quality, matchWorldLevel: true);
+                inv.RemoveItem(sharedName, remove, quality, worldLevelBased: true);
                 container.Save();
                 taken += remove;
                 remaining -= remove;
