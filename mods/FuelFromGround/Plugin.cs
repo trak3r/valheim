@@ -22,7 +22,8 @@ namespace TeflonTed.FuelFromGround
     }
 
     /// <summary>
-    /// Kilns/smelters/furnaces suck matching fuel ItemDrops within ~2.5m (assembly-line drops).
+    /// Kilns/smelters/furnaces suck matching fuel or cookable item drops within ~2.5m.
+    /// Wood next to a kiln is queued as ore; coal next to a smelter is added as fuel.
     /// </summary>
     [HarmonyPatch(typeof(Smelter), "UpdateSmelter")]
     internal static class Smelter_UpdateSmelter_Patch
@@ -44,8 +45,7 @@ namespace TeflonTed.FuelFromGround
 
             LastRun[id] = Time.time;
 
-            int room = SmelterFuel.FuelRoom(__instance);
-            if (room <= 0)
+            if (SmelterFuel.FuelRoom(__instance) <= 0 && SmelterFuel.OreRoom(__instance) <= 0)
             {
                 return;
             }
@@ -53,39 +53,50 @@ namespace TeflonTed.FuelFromGround
             var drops = NearbyItemDrops.Find(__instance.transform.position, Radii.FuelAdjacency);
             foreach (var drop in drops)
             {
-                if (room <= 0)
-                {
-                    break;
-                }
-
-                if (!SmelterFuel.IsFuelItem(__instance, drop.m_itemData))
+                if (drop?.m_itemData == null)
                 {
                     continue;
                 }
 
-                // Consume one from the ground stack.
-                var nview = drop.GetComponent<ZNetView>();
-                if (drop.m_itemData.m_stack <= 1)
+                // Ensure prefab name is available for ore RPC (kiln wood, smelter ore, etc.).
+                if (drop.m_itemData.m_dropPrefab == null)
                 {
-                    if (nview != null && nview.GetZDO() != null && ZNetScene.instance != null)
-                    {
-                        ZNetScene.instance.Destroy(drop.gameObject);
-                    }
-                    else
-                    {
-                        Object.Destroy(drop.gameObject);
-                    }
+                    drop.m_itemData.m_dropPrefab = drop.gameObject;
+                }
+
+                if (!SmelterFuel.TryAcceptItem(__instance, drop.m_itemData))
+                {
+                    continue;
+                }
+
+                ConsumeOneFromDrop(drop);
+                break; // one per tick
+            }
+        }
+
+        private static void ConsumeOneFromDrop(ItemDrop drop)
+        {
+            var nview = drop.GetComponent<ZNetView>();
+            if (drop.m_itemData.m_stack <= 1)
+            {
+                if (nview != null && nview.IsValid())
+                {
+                    nview.Destroy();
+                }
+                else if (ZNetScene.instance != null)
+                {
+                    ZNetScene.instance.Destroy(drop.gameObject);
                 }
                 else
                 {
-                    drop.m_itemData.m_stack--;
-                    AccessTools.Method(typeof(ItemDrop), "Save")?.Invoke(drop, null);
+                    Object.Destroy(drop.gameObject);
                 }
 
-                SmelterFuel.AddOneFuel(__instance);
-                room--;
-                break; // one per tick
+                return;
             }
+
+            drop.m_itemData.m_stack--;
+            AccessTools.Method(typeof(ItemDrop), "Save")?.Invoke(drop, null);
         }
     }
 }

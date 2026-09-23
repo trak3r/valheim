@@ -22,7 +22,8 @@ namespace TeflonTed.FuelFromChests
     }
 
     /// <summary>
-    /// Kilns, smelters, and blast furnaces pull wood/coal from chests within ~2.5m.
+    /// Kilns / smelters / blast furnaces pull matching items from chests within ~2.5m.
+    /// Wood → kiln ore queue; coal → smelter fuel; ores → smelter/furnace queues.
     /// </summary>
     [HarmonyPatch(typeof(Smelter), "UpdateSmelter")]
     internal static class Smelter_UpdateSmelter_Patch
@@ -44,24 +45,46 @@ namespace TeflonTed.FuelFromChests
 
             LastRun[id] = Time.time;
 
-            int room = SmelterFuel.FuelRoom(__instance);
-            if (room <= 0 || __instance.m_fuelItem?.m_itemData?.m_shared == null)
-            {
-                return;
-            }
-
-            string fuelName = __instance.m_fuelItem.m_itemData.m_shared.m_name;
             var chests = NearbyContainers.Find(__instance.transform.position, Radii.FuelAdjacency);
             if (chests.Count == 0)
             {
                 return;
             }
 
-            // One unit per tick keeps filling gentle and shared across machines.
-            int taken = NearbyContainers.TakeItem(chests, fuelName, 1);
-            if (taken > 0)
+            // Fuel first (coal for smelter/furnace).
+            if (__instance.m_fuelItem?.m_itemData?.m_shared != null && SmelterFuel.FuelRoom(__instance) > 0)
             {
-                SmelterFuel.AddOneFuel(__instance);
+                string fuelName = __instance.m_fuelItem.m_itemData.m_shared.m_name;
+                if (NearbyContainers.TakeItem(chests, fuelName, 1) > 0)
+                {
+                    SmelterFuel.AddOneFuel(__instance);
+                    return;
+                }
+            }
+
+            // Then conversion inputs (wood for kiln, metal for smelter).
+            if (SmelterFuel.OreRoom(__instance) <= 0 || __instance.m_conversion == null)
+            {
+                return;
+            }
+
+            foreach (var conversion in __instance.m_conversion)
+            {
+                var from = conversion?.m_from;
+                if (from?.m_itemData?.m_shared == null)
+                {
+                    continue;
+                }
+
+                string sharedName = from.m_itemData.m_shared.m_name;
+                string prefabName = from.gameObject.name;
+                if (NearbyContainers.TakeItem(chests, sharedName, 1) <= 0)
+                {
+                    continue;
+                }
+
+                SmelterFuel.AddOneOre(__instance, prefabName);
+                return;
             }
         }
     }

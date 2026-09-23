@@ -14,12 +14,22 @@ namespace TeflonTed.Common
             var hits = Physics.OverlapSphere(center, Mathf.Max(radius, 0f), LayerMask.GetMask("item"));
             foreach (var hit in hits)
             {
-                if (hit == null || hit.attachedRigidbody == null)
+                if (hit == null)
                 {
                     continue;
                 }
 
-                var drop = hit.attachedRigidbody.GetComponent<ItemDrop>();
+                ItemDrop drop = null;
+                if (hit.attachedRigidbody != null)
+                {
+                    drop = hit.attachedRigidbody.GetComponent<ItemDrop>();
+                }
+
+                if (drop == null)
+                {
+                    drop = hit.GetComponentInParent<ItemDrop>();
+                }
+
                 if (drop == null)
                 {
                     continue;
