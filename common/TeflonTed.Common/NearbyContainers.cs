@@ -29,6 +29,12 @@ namespace TeflonTed.Common
                 var container = hit.GetComponentInParent<Container>();
                 if (container == null)
                 {
+                    // Some pieces (e.g. Obliterator) put Container on a child of the collider.
+                    container = hit.GetComponentInChildren<Container>();
+                }
+
+                if (container == null)
+                {
                     continue;
                 }
 
