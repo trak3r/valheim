@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared Valheim / BepInEx references. Requires Environment.props with VALHEIM_INSTALL. -->
+<Project>
+  <PropertyGroup>
+    <_HasValheim Condition="'$(VALHEIM_INSTALL)' != '' and Exists('$(MANAGED_PATH)\assembly_valheim.dll')">true</_HasValheim>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_HasValheim)' == 'true'">
+    <Reference Include="BepInEx">
+      <HintPath>$(BEPINEX_PATH)\core\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(BEPINEX_PATH)\core\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_valheim" Publicize="true">
+      <HintPath>$(MANAGED_PATH)\assembly_valheim.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_utils" Publicize="true">
+      <HintPath>$(MANAGED_PATH)\assembly_utils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_guiutils" Publicize="true">
+      <HintPath>$(MANAGED_PATH)\assembly_guiutils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Deploy plugin (+ optional Common.dll) into BepInEx/plugins/TeflonTed.<Name>/ -->
+  <Target Name="DeployToValheim" AfterTargets="Build" Condition="'$(_HasValheim)' == 'true' and '$(IsValheimPlugin)' == 'true'">
+    <PropertyGroup>
+      <_DeployDir>$(MOD_DEPLOYPATH)\$(AssemblyName)</_DeployDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(_DeployDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(_DeployDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb"
+          DestinationFolder="$(_DeployDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <ItemGroup Condition="'$(CopyCommonOnDeploy)' == 'true'">
+      <_CommonDll Include="$(TargetDir)TeflonTed.Common.dll" Condition="Exists('$(TargetDir)TeflonTed.Common.dll')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CommonDll)" DestinationFolder="$(_DeployDir)" SkipUnchangedFiles="true" Condition="'@(_CommonDll)' != ''" />
+    <Message Importance="high" Text="Deployed $(AssemblyName) → $(_DeployDir)" />
+  </Target>
+
+  <Target Name="WarnMissingValheim" BeforeTargets="ResolveAssemblyReferences" Condition="'$(_HasValheim)' != 'true'">
+    <Warning Text="VALHEIM_INSTALL is not set or assembly_valheim.dll was not found. Copy Environment.props.example to Environment.props and point it at your Windows Valheim install before building." />
+  </Target>
+</Project>

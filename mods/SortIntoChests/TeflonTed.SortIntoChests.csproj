@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.SortIntoChests</RootNamespace>
+    <AssemblyName>TeflonTed.SortIntoChests</AssemblyName>
+    <Description>Teflon Ted's Sort Into Chests — backtick quick-stacks into matching nearby chests</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+    <CopyCommonOnDeploy>true</CopyCommonOnDeploy>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\TeflonTed.Common\TeflonTed.Common.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>

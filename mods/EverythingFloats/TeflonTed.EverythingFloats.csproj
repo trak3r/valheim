@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.EverythingFloats</RootNamespace>
+    <AssemblyName>TeflonTed.EverythingFloats</AssemblyName>
+    <Description>Teflon Ted's Everything Floats — dropped items do not sink</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+  </PropertyGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>

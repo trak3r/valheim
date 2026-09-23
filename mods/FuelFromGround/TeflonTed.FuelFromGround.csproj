@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.FuelFromGround</RootNamespace>
+    <AssemblyName>TeflonTed.FuelFromGround</AssemblyName>
+    <Description>Teflon Ted's Fuel From Ground — kilns/smelters suck fuel drops from the ground</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+    <CopyCommonOnDeploy>true</CopyCommonOnDeploy>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\TeflonTed.Common\TeflonTed.Common.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>

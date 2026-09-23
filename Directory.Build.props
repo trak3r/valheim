@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
+    <Author>Teflon Ted</Author>
+  </PropertyGroup>
+
+  <!-- Optional local overrides: copy Environment.props.example → Environment.props -->
+  <Import Project="$(MSBuildThisFileDirectory)Environment.props"
+          Condition="Exists('$(MSBuildThisFileDirectory)Environment.props')" />
+
+  <PropertyGroup Condition="'$(VALHEIM_INSTALL)' != ''">
+    <BEPINEX_PATH Condition="'$(BEPINEX_PATH)' == ''">$(VALHEIM_INSTALL)\BepInEx</BEPINEX_PATH>
+    <MANAGED_PATH Condition="'$(MANAGED_PATH)' == ''">$(VALHEIM_INSTALL)\valheim_Data\Managed</MANAGED_PATH>
+    <MOD_DEPLOYPATH Condition="'$(MOD_DEPLOYPATH)' == ''">$(BEPINEX_PATH)\plugins</MOD_DEPLOYPATH>
+  </PropertyGroup>
+</Project>

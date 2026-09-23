@@ -1,0 +1,33 @@
+## Build
+bin/
+obj/
+*.user
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+
+## Local Valheim path (copy from Environment.props.example)
+Environment.props
+
+## Publicized assemblies (generated on Windows)
+**/publicized*/
+**/publicized_assemblies/
+
+## IDE
+.vs/
+.idea/
+*.user
+*.suo
+*.useros
+*.sln.docstates
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Packages
+packages/
+*.nupkg

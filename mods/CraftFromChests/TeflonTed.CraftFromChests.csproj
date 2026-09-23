@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.CraftFromChests</RootNamespace>
+    <AssemblyName>TeflonTed.CraftFromChests</AssemblyName>
+    <Description>Teflon Ted's Craft From Chests — craft using materials in nearby chests</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+    <CopyCommonOnDeploy>true</CopyCommonOnDeploy>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\TeflonTed.Common\TeflonTed.Common.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>
