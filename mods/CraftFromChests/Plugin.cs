@@ -165,7 +165,7 @@ namespace TeflonTed.CraftFromChests
         }
     }
 
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.HaveItem))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.HaveItem), typeof(string), typeof(bool))]
     internal static class Inventory_HaveItem_Patch
     {
         private static void Postfix(Inventory __instance, string name, bool matchWorldLevel, ref bool __result)
