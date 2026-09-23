@@ -70,7 +70,7 @@ namespace TeflonTed.SortIntoChests
                 return 0;
             }
 
-            var chests = NearbyContainers.Find(player.transform.position, Radii.Workstation);
+            var chests = NearbyContainers.Find(player.transform.position, Radii.Workstation, includeAllIncinerators: true);
             if (chests.Count == 0)
             {
                 return 0;

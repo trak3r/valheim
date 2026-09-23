@@ -166,6 +166,12 @@ namespace TeflonTed.FuelFromChests
 
             LastRun[id] = Time.time;
 
+            // Avoid chest scans when this station cannot accept anything.
+            if (SmelterFuel.FuelRoom(__instance) <= 0 && SmelterFuel.OreRoom(__instance) <= 0)
+            {
+                return;
+            }
+
             var chests = ChestSupply.Nearby(__instance);
             if (chests.Count == 0)
             {

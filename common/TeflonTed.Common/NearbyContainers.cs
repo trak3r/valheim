@@ -7,9 +7,18 @@ namespace TeflonTed.Common
     {
         /// <summary>
         /// Find player-accessible containers within <paramref name="radius"/> of <paramref name="center"/>.
-        /// Includes Obliterator (Incinerator) inventories, which are easy to miss via physics alone.
+        /// Uses physics only — safe for periodic fuel/craft scans.
         /// </summary>
         public static List<Container> Find(Vector3 center, float radius)
+        {
+            return Find(center, radius, includeAllIncinerators: false);
+        }
+
+        /// <param name="includeAllIncinerators">
+        /// When true (sort hotkey only), also scan for Obliterators that physics might miss.
+        /// Do not enable on periodic ticks — FindObjectsOfType is expensive.
+        /// </param>
+        public static List<Container> Find(Vector3 center, float radius, bool includeAllIncinerators)
         {
             var result = new List<Container>();
             var player = Player.m_localPlayer;
@@ -60,7 +69,6 @@ namespace TeflonTed.Common
                 result.Add(container);
             }
 
-            // Normal chests / pieces via physics.
             var hits = Physics.OverlapSphere(center, Mathf.Max(radius, 0f), LayerMask.GetMask("piece"));
             foreach (var hit in hits)
             {
@@ -69,22 +77,33 @@ namespace TeflonTed.Common
                     continue;
                 }
 
-                var container = hit.GetComponentInParent<Container>() ??
-                                hit.GetComponentInChildren<Container>();
-                TryAdd(container);
-            }
-
-            // Obliterator: Incinerator holds a Container reference that OverlapSphere often misses.
-            foreach (var incinerator in Object.FindObjectsOfType<Incinerator>())
-            {
-                if (incinerator == null)
+                var container = hit.GetComponentInParent<Container>();
+                if (container == null)
                 {
-                    continue;
+                    container = hit.GetComponentInChildren<Container>();
                 }
 
-                TryAdd(incinerator.m_container);
-                TryAdd(incinerator.GetComponent<Container>());
-                TryAdd(incinerator.GetComponentInChildren<Container>());
+                TryAdd(container);
+
+                // Cheap: if this piece is/near an Obliterator, take its container ref.
+                var incinerator = hit.GetComponentInParent<Incinerator>();
+                if (incinerator != null)
+                {
+                    TryAdd(incinerator.m_container);
+                }
+            }
+
+            if (includeAllIncinerators)
+            {
+                foreach (var incinerator in Object.FindObjectsOfType<Incinerator>())
+                {
+                    if (incinerator == null)
+                    {
+                        continue;
+                    }
+
+                    TryAdd(incinerator.m_container);
+                }
             }
 
             return result;
