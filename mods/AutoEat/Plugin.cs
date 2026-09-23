@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using BepInEx;
 using HarmonyLib;
 
@@ -14,25 +13,41 @@ namespace TeflonTed.AutoEat
 
         private void Awake()
         {
-            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Plugin).Assembly, PluginGuid);
             Logger.LogInfo($"{PluginName} {PluginVersion} loaded");
         }
     }
 
     /// <summary>
-    /// When a food buff's timer hits zero this tick, re-eat the same food from inventory if available.
-    /// Manual food removal and death are ignored — only natural expiry.
+    /// When a food buff expires naturally this food-tick, re-eat the same food from inventory if available.
     /// </summary>
     [HarmonyPatch(typeof(Player), "UpdateFood")]
     internal static class Player_UpdateFood_Patch
     {
-        private static readonly List<string> Expiring = new List<string>();
+        private const float FoodTickInterval = 1f;
 
-        private static void Prefix(Player __instance, float dt)
+        private static readonly List<string> Expiring = new List<string>();
+        private static int Depth;
+
+        private static void Prefix(Player __instance, float dt, bool forceUpdate)
         {
+            // Ignore nested UpdateFood from EatFood while we auto-eat.
+            if (Depth > 0)
+            {
+                return;
+            }
+
             Expiring.Clear();
 
             if (__instance == null || __instance != Player.m_localPlayer || __instance.IsDead())
+            {
+                return;
+            }
+
+            // Vanilla only burns food when the 1s food timer elapses (or forceUpdate).
+            float nextTimer = __instance.m_foodUpdateTimer + dt * Game.m_foodRate;
+            bool willTick = forceUpdate || nextTimer >= FoodTickInterval;
+            if (!willTick)
             {
                 return;
             }
@@ -50,8 +65,8 @@ namespace TeflonTed.AutoEat
                     continue;
                 }
 
-                // This food will be removed by UpdateFood this frame.
-                if (food.m_time <= dt)
+                // This tick subtracts FoodTickInterval from m_time; <= 0 removes the buff.
+                if (food.m_time <= FoodTickInterval)
                 {
                     Expiring.Add(food.m_item.m_shared.m_name);
                 }
@@ -60,7 +75,12 @@ namespace TeflonTed.AutoEat
 
         private static void Postfix(Player __instance)
         {
-            if (Expiring.Count == 0 || __instance == null || __instance != Player.m_localPlayer || __instance.IsDead())
+            if (Depth > 0 || Expiring.Count == 0)
+            {
+                return;
+            }
+
+            if (__instance == null || __instance != Player.m_localPlayer || __instance.IsDead())
             {
                 Expiring.Clear();
                 return;
@@ -73,19 +93,30 @@ namespace TeflonTed.AutoEat
                 return;
             }
 
-            foreach (string sharedName in Expiring)
+            Depth++;
+            try
             {
-                var item = inventory.GetItem(sharedName, -1, isPrefabName: false);
-                if (item == null)
+                foreach (string sharedName in Expiring)
                 {
-                    continue;
+                    var item = inventory.GetItem(sharedName, -1, isPrefabName: false);
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+                    if (!__instance.CanEat(item, false))
+                    {
+                        continue;
+                    }
+
+                    __instance.ConsumeItem(inventory, item, false);
                 }
-
-                // Same path as manually eating from the inventory.
-                __instance.ConsumeItem(inventory, item, false);
             }
-
-            Expiring.Clear();
+            finally
+            {
+                Depth--;
+                Expiring.Clear();
+            }
         }
     }
 }
