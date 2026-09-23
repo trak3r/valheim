@@ -95,7 +95,7 @@ namespace TeflonTed.Common
 
             if (includeAllIncinerators)
             {
-                foreach (var incinerator in Object.FindObjectsOfType<Incinerator>())
+                foreach (var incinerator in Object.FindObjectsByType<Incinerator>(FindObjectsSortMode.None))
                 {
                     if (incinerator == null)
                     {
