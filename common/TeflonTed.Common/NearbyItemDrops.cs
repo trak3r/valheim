@@ -82,9 +82,7 @@ namespace TeflonTed.Common
 
         public static string PrefabName(Component component)
         {
-            string name = component.gameObject.name;
-            int cut = name.IndexOfAny(new[] { '(', ' ' });
-            return cut >= 0 ? name.Substring(0, cut) : name;
+            return SmelterFuel.PrefabName(component.gameObject.name);
         }
     }
 }

@@ -10,7 +10,7 @@ Personal suite of single-purpose Valheim mods. Each mod does one thing. Minimal 
 | [Eternal Lights](mods/EternalLights) | Torches / sconces / braziers never need fuel |
 | [Auto Repair](mods/AutoRepair) | Opening a workstation repairs inventory items that station can repair |
 | [Everything Floats](mods/EverythingFloats) | Dropped items float on water instead of sinking |
-| [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / furnaces / windmills pull from chests within ~2.5m (auto + manual E) |
+| [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / furnaces / windmills / spinning wheels pull from chests within ~2.5m (auto + manual E) |
 | [Fuel From Ground](mods/FuelFromGround) | Same machines suck matching item-drops within ~2.5m (assembly lines) |
 | [Auto Eat](mods/AutoEat) | When a food buff fully expires, re-eat the same food from inventory if you still have it |
 

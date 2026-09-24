@@ -5,9 +5,9 @@ using UnityEngine;
 namespace TeflonTed.Common
 {
     /// <summary>
-    /// Helpers for Smelter-based stations (kiln / smelter / blast furnace / windmill).
-    /// Kilns take wood as queued "ore"; smelters take coal as fuel and metal as ore;
-    /// windmills take barley (etc.) as ore.
+    /// Helpers for Smelter-based stations (kiln / smelter / blast furnace / windmill /
+    /// spinning wheel). Kilns take wood as queued "ore"; smelters take coal as fuel and
+    /// metal as ore; windmills take barley; spinning wheels take flax.
     /// </summary>
     public static class SmelterFuel
     {
@@ -28,12 +28,14 @@ namespace TeflonTed.Common
 
         /// <summary>
         /// World points where players dump fuel/ore. Blast furnaces put ore and coal on
-        /// opposite sides — search every intake, not only the first switch. Tall pieces
-        /// like the windmill use the intake instead of the elevated component origin.
+        /// opposite sides — search every intake, not only the first switch. Also include
+        /// the piece origin so compact stations (spinning wheel) still see adjacent chests
+        /// when the switch transform sits oddly. Tall pieces like the windmill still prefer
+        /// the ground-level intake switch over the elevated origin alone.
         /// </summary>
         public static List<Vector3> IntakePositions(Smelter smelter)
         {
-            var points = new List<Vector3>(3);
+            var points = new List<Vector3>(4);
             if (smelter == null)
             {
                 return points;
@@ -61,15 +63,13 @@ namespace TeflonTed.Common
             Add(smelter.m_addOreSwitch != null ? smelter.m_addOreSwitch.transform : null);
             Add(smelter.m_addWoodSwitch != null ? smelter.m_addWoodSwitch.transform : null);
 
-            if (points.Count == 0 && smelter.m_windmill != null)
+            if (smelter.m_windmill != null)
             {
                 Add(smelter.m_windmill.transform);
             }
 
-            if (points.Count == 0)
-            {
-                points.Add(smelter.transform.position);
-            }
+            // Always include piece origin as a fallback search center.
+            Add(smelter.transform);
 
             return points;
         }
@@ -165,15 +165,27 @@ namespace TeflonTed.Common
                 return null;
             }
 
-            // Instance names are like "Barley(Clone)"; IsItemAllowed wants "Barley".
-            string name = item.m_dropPrefab.name;
+            return PrefabName(item.m_dropPrefab.name);
+        }
+
+        /// <summary>
+        /// Instance names are like "Flax(Clone)"; IsItemAllowed wants "Flax".
+        /// Same rules as vanilla ItemDrop.GetPrefabName.
+        /// </summary>
+        public static string PrefabName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
             int cut = name.IndexOfAny(new[] { '(', ' ' });
             return cut >= 0 ? name.Substring(0, cut) : name;
         }
 
         /// <summary>
         /// Prefer fuel when the station uses it; otherwise accept conversion ("ore") inputs
-        /// such as wood for a charcoal kiln or barley for a windmill.
+        /// such as wood for a charcoal kiln, barley for a windmill, or flax for a spinning wheel.
         /// </summary>
         public static bool TryAcceptItem(Smelter smelter, ItemDrop.ItemData item)
         {

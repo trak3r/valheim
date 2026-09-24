@@ -123,7 +123,7 @@ namespace TeflonTed.FuelFromChests
                 }
 
                 string sharedName = from.m_itemData.m_shared.m_name;
-                string prefabName = from.gameObject.name;
+                string prefabName = SmelterFuel.PrefabName(from.gameObject.name);
                 if (NearbyContainers.TakeItem(chests, sharedName, 1) <= 0)
                 {
                     continue;
@@ -202,7 +202,7 @@ namespace TeflonTed.FuelFromChests
                 }
 
                 string sharedName = from.m_itemData.m_shared.m_name;
-                string prefabName = from.gameObject.name;
+                string prefabName = SmelterFuel.PrefabName(from.gameObject.name);
                 if (NearbyContainers.TakeItem(chests, sharedName, 1) <= 0)
                 {
                     continue;
