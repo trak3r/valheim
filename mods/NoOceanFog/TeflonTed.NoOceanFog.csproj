@@ -3,7 +3,7 @@
     <RootNamespace>TeflonTed.NoOceanFog</RootNamespace>
     <AssemblyName>TeflonTed.NoOceanFog</AssemblyName>
     <Description>Teflon Ted's No Ocean Fog — disables Misty weather in the Ocean biome</Description>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <IsValheimPlugin>true</IsValheimPlugin>
   </PropertyGroup>
   <Import Project="..\..\ValheimReferences.targets" />

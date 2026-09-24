@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using BepInEx;
 using HarmonyLib;
@@ -11,7 +11,7 @@ namespace TeflonTed.NoOceanFog
     {
         public const string PluginGuid = "com.teflonted.valheim.nooceanfog";
         public const string PluginName = "Teflon Ted's No Ocean Fog";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         private void Awake()
         {
@@ -21,104 +21,140 @@ namespace TeflonTed.NoOceanFog
     }
 
     /// <summary>
-    /// Ocean fog is the Misty environment entry on the Ocean biome.
-    /// Remove it at startup so Misty never rolls while sailing.
-    /// Plains Misty (and everything else) is left alone.
+    /// Ocean whiteout is the Misty weather entry. ZoneSystem.AppendBiomeSetup can re-add it
+    /// after EnvMan.Awake, so we purge on awake + append and filter selection.
     /// </summary>
-    [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.Awake))]
-    internal static class EnvMan_Awake_Patch
+    internal static class OceanMisty
     {
-        private static void Postfix(EnvMan __instance)
+        internal static bool IsMistyName(string name)
         {
-            if (__instance?.m_biomes == null)
-            {
-                return;
-            }
-
-            int removedTotal = 0;
-            foreach (BiomeEnvSetup biome in __instance.m_biomes)
-            {
-                if (biome == null || biome.m_biome != Heightmap.Biome.Ocean)
-                {
-                    continue;
-                }
-
-                removedTotal += RemoveMistyEntries(biome.m_environments);
-            }
-
-            if (removedTotal > 0)
-            {
-                BepInEx.Logging.Logger.CreateLogSource(Plugin.PluginName)
-                    .LogInfo($"Removed {removedTotal} Misty weather entr{(removedTotal == 1 ? "y" : "ies")} from Ocean");
-            }
+            return !string.IsNullOrEmpty(name) &&
+                   name.IndexOf("Misty", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        private static int RemoveMistyEntries(IList environments)
+        internal static bool IsMisty(EnvEntry entry)
         {
-            if (environments == null || environments.Count == 0)
+            if (entry == null)
+            {
+                return false;
+            }
+
+            if (IsMistyName(entry.m_environment))
+            {
+                return true;
+            }
+
+            return entry.m_env != null && IsMistyName(entry.m_env.m_name);
+        }
+
+        internal static int PurgeFromOcean(EnvMan envMan)
+        {
+            if (envMan?.m_biomes == null)
             {
                 return 0;
             }
 
             int removed = 0;
-            for (int i = environments.Count - 1; i >= 0; i--)
+            foreach (BiomeEnvSetup biome in envMan.m_biomes)
             {
-                object entry = environments[i];
-                if (entry == null)
+                if (biome == null || biome.m_biome != Heightmap.Biome.Ocean || biome.m_environments == null)
                 {
                     continue;
                 }
 
-                if (!IsMisty(entry))
-                {
-                    continue;
-                }
-
-                environments.RemoveAt(i);
-                removed++;
+                removed += biome.m_environments.RemoveAll(IsMisty);
             }
 
             return removed;
         }
 
-        private static bool IsMisty(object entry)
+        internal static void StripList(List<EnvEntry> entries)
         {
-            string envName = ReadString(entry, "m_environment");
-            if (!string.IsNullOrEmpty(envName) &&
-                envName.IndexOf("Misty", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (entries == null || entries.Count == 0)
             {
-                return true;
+                return;
             }
 
-            object envSetup = ReadField(entry, "m_env");
-            if (envSetup != null)
-            {
-                string name = ReadString(envSetup, "m_name");
-                if (!string.IsNullOrEmpty(name) &&
-                    name.IndexOf("Misty", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            entries.RemoveAll(IsMisty);
         }
+    }
 
-        private static string ReadString(object obj, string fieldName)
+    [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.Awake))]
+    internal static class EnvMan_Awake_Patch
+    {
+        private static void Postfix(EnvMan __instance)
         {
-            object value = ReadField(obj, fieldName);
-            return value as string;
-        }
-
-        private static object ReadField(object obj, string fieldName)
-        {
-            if (obj == null)
+            int removed = OceanMisty.PurgeFromOcean(__instance);
+            if (removed > 0)
             {
-                return null;
+                BepInEx.Logging.Logger.CreateLogSource(Plugin.PluginName)
+                    .LogInfo($"Removed {removed} Misty entr{(removed == 1 ? "y" : "ies")} from Ocean (Awake)");
+            }
+        }
+    }
+
+    /// <summary>
+    /// ZoneSystem merges locationlist biome setups after Awake via AddRange — which
+    /// puts Misty back onto Ocean. Strip again whenever a setup is appended.
+    /// </summary>
+    [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.AppendBiomeSetup))]
+    internal static class EnvMan_AppendBiomeSetup_Patch
+    {
+        private static void Postfix(EnvMan __instance, BiomeEnvSetup biomeEnv)
+        {
+            if (biomeEnv != null && biomeEnv.m_biome == Heightmap.Biome.Ocean)
+            {
+                OceanMisty.StripList(biomeEnv.m_environments);
             }
 
-            var field = AccessTools.Field(obj.GetType(), fieldName);
-            return field?.GetValue(obj);
+            int removed = OceanMisty.PurgeFromOcean(__instance);
+            if (removed > 0)
+            {
+                BepInEx.Logging.Logger.CreateLogSource(Plugin.PluginName)
+                    .LogInfo($"Removed {removed} Misty entr{(removed == 1 ? "y" : "ies")} from Ocean (AppendBiomeSetup)");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Final gate: never offer Misty while the player is in the Ocean biome
+    /// (also drops Misty injected by AltBiome.m_addEnvironments).
+    /// </summary>
+    [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.GetAvailableEnvironments))]
+    internal static class EnvMan_GetAvailableEnvironments_Patch
+    {
+        private static void Postfix(BiomeSector biome, List<EnvEntry> __result)
+        {
+            if (__result == null || biome.Biome != Heightmap.Biome.Ocean)
+            {
+                return;
+            }
+
+            OceanMisty.StripList(__result);
+        }
+    }
+
+    /// <summary>
+    /// If Misty is already active when entering Ocean (or was selected before a purge),
+    /// kick to Clear immediately instead of waiting out the weather period.
+    /// </summary>
+    [HarmonyPatch(typeof(EnvMan), "UpdateEnvironment")]
+    internal static class EnvMan_UpdateEnvironment_Patch
+    {
+        private static void Postfix(EnvMan __instance, BiomeSector biome)
+        {
+            if (__instance == null || biome.Biome != Heightmap.Biome.Ocean)
+            {
+                return;
+            }
+
+            EnvSetup current = __instance.GetCurrentEnvironment();
+            if (current == null || !OceanMisty.IsMistyName(current.m_name))
+            {
+                return;
+            }
+
+            __instance.QueueEnvironment("Clear");
         }
     }
 }
