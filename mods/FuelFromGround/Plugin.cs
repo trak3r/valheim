@@ -22,7 +22,7 @@ namespace TeflonTed.FuelFromGround
     }
 
     /// <summary>
-    /// Kilns/smelters/furnaces/windmills/spinning wheels suck matching fuel or cookable item drops within ~2.5m.
+    /// Kilns/smelters/furnaces/windmills/spinning wheels suck matching fuel or cookable item drops within ~4m.
     /// Wood → kiln; coal/ore → smelter; barley → windmill; flax → spinning wheel.
     /// </summary>
     [HarmonyPatch(typeof(Smelter), "UpdateSmelter")]

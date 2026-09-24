@@ -6,7 +6,10 @@ namespace TeflonTed.Common
         /// <summary>Craft / sort: workstation-scale reach.</summary>
         public const float Workstation = 20f;
 
-        /// <summary>Fuel pull: intentionally tight so general storage is not drained.</summary>
-        public const float FuelAdjacency = 2.5f;
+        /// <summary>
+        /// Fuel pull: tight enough to avoid draining general storage, wide enough for
+        /// large pieces like the charcoal kiln (~4m footprint).
+        /// </summary>
+        public const float FuelAdjacency = 4f;
     }
 }
