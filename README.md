@@ -6,7 +6,7 @@ Personal suite of single-purpose Valheim mods. Each mod does one thing. Minimal 
 |-----|----------------|
 | [Craft From Chests](mods/CraftFromChests) | Workstation crafts/builds can use materials in chests within ~20m |
 | [Sort Into Chests](mods/SortIntoChests) | `` ` `` quick-stacks unequipped, non-hotbar items into nearby chests that already hold that item |
-| [No Ocean Fog](mods/NoOceanFog) | Removes Misty weather from the Ocean biome |
+| [No Ocean Fog](mods/NoOceanFog) | Removes Misty whiteout fog weather (all biomes) |
 | [Eternal Lights](mods/EternalLights) | Torches / sconces / braziers never need fuel |
 | [Auto Repair](mods/AutoRepair) | Opening a workstation repairs inventory items that station can repair |
 | [Everything Floats](mods/EverythingFloats) | Dropped items float on water instead of sinking |

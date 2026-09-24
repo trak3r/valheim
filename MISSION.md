@@ -9,7 +9,7 @@ I want to create a suite of single-purpose Valheim mods.
 
 - craft from nearby chests. when using a workstation, items in nearby chests are eligible ingredients, not just player's inventory
 - sort into nearby chests. when pressing the "`" hotkey, all unequipped and non-hotkey items in the player's invetory will be moved into nearby chests already containing the same items
-- no ocean fog. dense fog is a weather event in the ocean biome and it's annoying as fuck not fun gameplay. disable it.
+- no ocean fog. dense white Misty fog weather (ocean, plains, elsewhere) is annoying as fuck not fun gameplay. disable it. not Mistlands mist.
 - eternal lights. lighting build items (torches, sconces, braziers, etc.) do not require refueling
 - auto repair. when opening a workstation, automatically repair all equipped items pertinent to that workstation.
 - everything floats. items dropped in the water don't sink.
