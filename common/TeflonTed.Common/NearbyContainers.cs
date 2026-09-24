@@ -14,6 +14,31 @@ namespace TeflonTed.Common
             return Find(center, radius, includeAllIncinerators: false);
         }
 
+        /// <summary>
+        /// Union of containers within <paramref name="radius"/> of any center (e.g. ore + fuel intakes).
+        /// </summary>
+        public static List<Container> FindNearAny(IEnumerable<Vector3> centers, float radius)
+        {
+            var result = new List<Container>();
+            if (centers == null)
+            {
+                return result;
+            }
+
+            foreach (Vector3 center in centers)
+            {
+                foreach (Container container in Find(center, radius))
+                {
+                    if (!result.Contains(container))
+                    {
+                        result.Add(container);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <param name="includeAllIncinerators">
         /// When true (sort hotkey only), also scan for Obliterators that physics might miss.
         /// Do not enable on periodic ticks — FindObjectsOfType is expensive.

@@ -50,7 +50,7 @@ namespace TeflonTed.FuelFromGround
                 return;
             }
 
-            var drops = NearbyItemDrops.Find(SmelterFuel.IntakePosition(__instance), Radii.FuelAdjacency);
+            var drops = NearbyItemDrops.FindNearAny(SmelterFuel.IntakePositions(__instance), Radii.FuelAdjacency);
             foreach (var drop in drops)
             {
                 if (drop?.m_itemData == null)

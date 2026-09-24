@@ -55,6 +55,31 @@ namespace TeflonTed.Common
             return result;
         }
 
+        /// <summary>
+        /// Union of drops within <paramref name="radius"/> of any center (e.g. ore + fuel intakes).
+        /// </summary>
+        public static List<ItemDrop> FindNearAny(IEnumerable<Vector3> centers, float radius)
+        {
+            var result = new List<ItemDrop>();
+            if (centers == null)
+            {
+                return result;
+            }
+
+            foreach (Vector3 center in centers)
+            {
+                foreach (ItemDrop drop in Find(center, radius))
+                {
+                    if (!result.Contains(drop))
+                    {
+                        result.Add(drop);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static string PrefabName(Component component)
         {
             string name = component.gameObject.name;

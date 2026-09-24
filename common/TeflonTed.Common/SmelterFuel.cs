@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
@@ -26,32 +27,58 @@ namespace TeflonTed.Common
             AccessTools.Method(typeof(Smelter), "IsItemAllowed", new[] { typeof(string) });
 
         /// <summary>
-        /// World point where players dump fuel/ore — better than Smelter.transform for tall
-        /// pieces like the windmill, whose component origin can sit far above ground chests.
+        /// World points where players dump fuel/ore. Blast furnaces put ore and coal on
+        /// opposite sides — search every intake, not only the first switch. Tall pieces
+        /// like the windmill use the intake instead of the elevated component origin.
         /// </summary>
-        public static Vector3 IntakePosition(Smelter smelter)
+        public static List<Vector3> IntakePositions(Smelter smelter)
         {
+            var points = new List<Vector3>(3);
             if (smelter == null)
             {
-                return Vector3.zero;
+                return points;
             }
 
-            if (smelter.m_addOreSwitch != null)
+            void Add(Transform t)
             {
-                return smelter.m_addOreSwitch.transform.position;
+                if (t == null)
+                {
+                    return;
+                }
+
+                Vector3 p = t.position;
+                for (int i = 0; i < points.Count; i++)
+                {
+                    if ((points[i] - p).sqrMagnitude < 0.01f)
+                    {
+                        return;
+                    }
+                }
+
+                points.Add(p);
             }
 
-            if (smelter.m_addWoodSwitch != null)
+            Add(smelter.m_addOreSwitch != null ? smelter.m_addOreSwitch.transform : null);
+            Add(smelter.m_addWoodSwitch != null ? smelter.m_addWoodSwitch.transform : null);
+
+            if (points.Count == 0 && smelter.m_windmill != null)
             {
-                return smelter.m_addWoodSwitch.transform.position;
+                Add(smelter.m_windmill.transform);
             }
 
-            if (smelter.m_windmill != null)
+            if (points.Count == 0)
             {
-                return smelter.m_windmill.transform.position;
+                points.Add(smelter.transform.position);
             }
 
-            return smelter.transform.position;
+            return points;
+        }
+
+        /// <summary>Primary intake (first switch / fallback). Prefer <see cref="IntakePositions"/>.</summary>
+        public static Vector3 IntakePosition(Smelter smelter)
+        {
+            var points = IntakePositions(smelter);
+            return points.Count > 0 ? points[0] : Vector3.zero;
         }
 
         public static int FuelRoom(Smelter smelter)
