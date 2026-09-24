@@ -36,7 +36,7 @@ namespace TeflonTed.FuelFromChests
                 return new List<Container>();
             }
 
-            return NearbyContainers.Find(smelter.transform.position, Radii.FuelAdjacency);
+            return NearbyContainers.Find(SmelterFuel.IntakePosition(smelter), Radii.FuelAdjacency);
         }
 
         internal static bool InventoryHasFuel(Smelter smelter, Humanoid user)

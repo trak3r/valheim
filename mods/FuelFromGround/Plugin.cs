@@ -22,8 +22,8 @@ namespace TeflonTed.FuelFromGround
     }
 
     /// <summary>
-    /// Kilns/smelters/furnaces suck matching fuel or cookable item drops within ~2.5m.
-    /// Wood next to a kiln is queued as ore; coal next to a smelter is added as fuel.
+    /// Kilns/smelters/furnaces/windmills suck matching fuel or cookable item drops within ~2.5m.
+    /// Wood → kiln; coal/ore → smelter; barley → windmill.
     /// </summary>
     [HarmonyPatch(typeof(Smelter), "UpdateSmelter")]
     internal static class Smelter_UpdateSmelter_Patch
@@ -50,7 +50,7 @@ namespace TeflonTed.FuelFromGround
                 return;
             }
 
-            var drops = NearbyItemDrops.Find(__instance.transform.position, Radii.FuelAdjacency);
+            var drops = NearbyItemDrops.Find(SmelterFuel.IntakePosition(__instance), Radii.FuelAdjacency);
             foreach (var drop in drops)
             {
                 if (drop?.m_itemData == null)
@@ -58,7 +58,7 @@ namespace TeflonTed.FuelFromGround
                     continue;
                 }
 
-                // Ensure prefab name is available for ore RPC (kiln wood, smelter ore, etc.).
+                // Ensure prefab name is available for ore RPC (kiln wood, windmill barley, etc.).
                 if (drop.m_itemData.m_dropPrefab == null)
                 {
                     drop.m_itemData.m_dropPrefab = drop.gameObject;

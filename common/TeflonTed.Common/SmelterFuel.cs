@@ -4,8 +4,9 @@ using UnityEngine;
 namespace TeflonTed.Common
 {
     /// <summary>
-    /// Helpers for Smelter-based stations (kiln / smelter / blast furnace).
-    /// Kilns take wood as queued "ore"; smelters take coal as fuel and metal as ore.
+    /// Helpers for Smelter-based stations (kiln / smelter / blast furnace / windmill).
+    /// Kilns take wood as queued "ore"; smelters take coal as fuel and metal as ore;
+    /// windmills take barley (etc.) as ore.
     /// </summary>
     public static class SmelterFuel
     {
@@ -23,6 +24,35 @@ namespace TeflonTed.Common
 
         private static readonly System.Reflection.MethodInfo IsItemAllowedMethod =
             AccessTools.Method(typeof(Smelter), "IsItemAllowed", new[] { typeof(string) });
+
+        /// <summary>
+        /// World point where players dump fuel/ore — better than Smelter.transform for tall
+        /// pieces like the windmill, whose component origin can sit far above ground chests.
+        /// </summary>
+        public static Vector3 IntakePosition(Smelter smelter)
+        {
+            if (smelter == null)
+            {
+                return Vector3.zero;
+            }
+
+            if (smelter.m_addOreSwitch != null)
+            {
+                return smelter.m_addOreSwitch.transform.position;
+            }
+
+            if (smelter.m_addWoodSwitch != null)
+            {
+                return smelter.m_addWoodSwitch.transform.position;
+            }
+
+            if (smelter.m_windmill != null)
+            {
+                return smelter.m_windmill.transform.position;
+            }
+
+            return smelter.transform.position;
+        }
 
         public static int FuelRoom(Smelter smelter)
         {
@@ -103,17 +133,20 @@ namespace TeflonTed.Common
 
         public static string PrefabName(ItemDrop.ItemData item)
         {
-            if (item?.m_dropPrefab != null)
+            if (item?.m_dropPrefab == null)
             {
-                return item.m_dropPrefab.name;
+                return null;
             }
 
-            return null;
+            // Instance names are like "Barley(Clone)"; IsItemAllowed wants "Barley".
+            string name = item.m_dropPrefab.name;
+            int cut = name.IndexOfAny(new[] { '(', ' ' });
+            return cut >= 0 ? name.Substring(0, cut) : name;
         }
 
         /// <summary>
         /// Prefer fuel when the station uses it; otherwise accept conversion ("ore") inputs
-        /// such as wood for a charcoal kiln.
+        /// such as wood for a charcoal kiln or barley for a windmill.
         /// </summary>
         public static bool TryAcceptItem(Smelter smelter, ItemDrop.ItemData item)
         {
