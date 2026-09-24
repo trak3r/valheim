@@ -1,73 +1,89 @@
 # Teflon Ted's Valheim Mod Suite
 
-Personal suite of single-purpose Valheim mods. Each mod does one thing. Minimal (usually zero) config.
+Single-purpose [BepInEx](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) QoL mods for Valheim. Each plugin does **one** thing. Almost no config.
 
-| Mod | What it does |
-|-----|----------------|
-| [Craft From Chests](mods/CraftFromChests) | Workstation crafts/builds can use materials in chests within ~20m |
-| [Sort Into Chests](mods/SortIntoChests) | `` ` `` quick-stacks unequipped, non-hotbar items into nearby chests that already hold that item |
-| [No Ocean Fog](mods/NoOceanFog) | Removes Misty whiteout fog weather (all biomes) |
-| [Eternal Lights](mods/EternalLights) | Torches / sconces / braziers never need fuel |
-| [Auto Repair](mods/AutoRepair) | Opening a workstation repairs inventory items that station can repair |
-| [Everything Floats](mods/EverythingFloats) | Dropped items float on water instead of sinking |
-| [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / furnaces / windmills / spinning wheels pull from chests within ~4m (auto + manual E) |
-| [Fuel From Ground](mods/FuelFromGround) | Same machines suck matching item-drops within ~4m (assembly lines) |
-| [Auto Eat](mods/AutoEat) | When a food buff fully expires, re-eat the same food from inventory if you still have it |
+```mermaid
+flowchart TB
+  subgraph suite [Teflon Ted suite]
+    Common[TeflonTed.Common]
+    Craft[Craft From Chests]
+    Sort[Sort Into Chests]
+    FuelC[Fuel From Chests]
+    FuelG[Fuel From Ground]
+    Fog[No Ocean Fog]
+    Lights[Eternal Lights]
+    Repair[Auto Repair]
+    Float[Everything Floats]
+    Eat[Auto Eat]
+  end
+  Craft --> Common
+  Sort --> Common
+  FuelC --> Common
+  FuelG --> Common
+```
 
-Shared helpers live in [`common/TeflonTed.Common`](common/TeflonTed.Common).
+## Mods
+
+| Mod | One-liner | Radius / trigger |
+|-----|-----------|------------------|
+| [Craft From Chests](mods/CraftFromChests) | Craft & build using materials in nearby chests | ~20 m around player |
+| [Sort Into Chests](mods/SortIntoChests) | `` ` `` quick-stacks into chests that already hold that item | ~20 m; skips hotbar & equipped |
+| [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / etc. pull fuel & ore from adjacent chests | ~4 m from intakes; auto + manual E |
+| [Fuel From Ground](mods/FuelFromGround) | Same stations suck matching item drops off the ground | ~4 m; assembly-line friendly |
+| [No Ocean Fog](mods/NoOceanFog) | Removes Misty whiteout weather (all biomes) | Always on |
+| [Eternal Lights](mods/EternalLights) | Fireplace lights never burn out | Always on |
+| [Auto Repair](mods/AutoRepair) | Opening a station repairs all worn items it can repair | On station UI |
+| [Everything Floats](mods/EverythingFloats) | Dropped items float on water | On item DB load |
+| [Auto Eat](mods/AutoEat) | Re-eat the same food when its buff fully expires | On food tick |
+
+Shared helpers: [`common/TeflonTed.Common`](common/TeflonTed.Common) (nearby containers, item drops, smelter intake math).
 
 ## Requirements
 
-- Valheim (Windows)
-- [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) (BepInEx 5)
+| Need | Notes |
+|------|--------|
+| Valheim (Windows) | Steam install |
+| [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) | BepInEx 5, Doorstop |
+| .NET SDK 6+ | Only if you build from source |
 
-## Build (Windows)
+## Quick start (Windows)
 
-1. Install the .NET SDK (6+ is fine; projects target `net472`) and a C# IDE if you want one.
-2. Install BepInEx into your Valheim folder.
-3. Copy `Environment.props.example` → `Environment.props` and set `VALHEIM_INSTALL` to your game path, e.g.
+1. Install BepInEx into your Valheim folder.
+2. Copy `Environment.props.example` → `Environment.props` and set:
 
    ```xml
    <VALHEIM_INSTALL>C:\Program Files (x86)\Steam\steamapps\common\Valheim</VALHEIM_INSTALL>
    ```
 
-4. From this repo root:
-
-   ```bat
-   dotnet restore TeflonTed.Valheim.sln
-   dotnet build TeflonTed.Valheim.sln -c Release
-   ```
-
-5. On a successful build, each plugin DLL is copied to:
-
-   `VALHEIM_INSTALL\BepInEx\plugins\TeflonTed.<ModName>\`
-
-   Mods that use the shared library also get `TeflonTed.Common.dll` in the same folder.
-
-## Launch from this folder
-
-Double-click [`Launch-Valheim.bat`](Launch-Valheim.bat) (Windows). It:
-
-1. Reads `VALHEIM_INSTALL` from `Environment.props`
-2. Builds + deploys all mods (`Release`)
-3. Starts `valheim.exe` from that install (BepInEx Doorstop loads whatever is in `plugins`)
-
-Skip the build when you just want to play:
+3. Double-click [`Launch-Valheim.bat`](Launch-Valheim.bat) — builds, deploys to `BepInEx\plugins\TeflonTed.*`, starts the game.
 
 ```bat
 Launch-Valheim.bat -SkipBuild
 ```
 
-You can also pin a Windows shortcut to `Launch-Valheim.bat` on the taskbar/desktop; keep the shortcut’s “Start in” as this repo folder (the `.bat` already `cd`s to itself).
+skips the build when you only want to play.
 
-`BepInEx.AssemblyPublicizer.MSBuild` publicizes `assembly_valheim` (and related) at compile time so patches can reach normally-private game members. You do not need to run a separate publicizer tool.
+### Manual build
 
-## Install without building
+```bat
+dotnet restore TeflonTed.Valheim.sln
+dotnet build TeflonTed.Valheim.sln -c Release
+```
 
-Drop each `TeflonTed.*.dll` (and `TeflonTed.Common.dll` beside any chest/fuel mod) into `BepInEx\plugins\` — one folder per mod is fine.
+Each plugin lands in `VALHEIM_INSTALL\BepInEx\plugins\TeflonTed.<ModName>\`. Chest/fuel mods also get `TeflonTed.Common.dll` in that folder.
+
+### Drop-in install (no SDK)
+
+Copy each `TeflonTed.*.dll` (and `TeflonTed.Common.dll` next to any chest/fuel mod) into `BepInEx\plugins\`.
+
+## Design rules
+
+- One job per mod
+- Hardcoded radii / behavior (no kitchen-sink config)
+- Branding: display name `Teflon Ted's …`, GUID `com.teflonted.valheim.<mod>`
+- Client-side QoL for single-player / trusted friends
 
 ## Notes
 
-- These are client-side quality-of-life mods aimed at single-player / trusted friends.
-- Game updates can rename Harmony targets; rebuild against the current `assembly_valheim.dll` if a mod stops loading.
-- Branding: display names are `Teflon Ted's …`; GUIDs are `com.teflonted.valheim.<mod>`.
+- Game updates can rename Harmony targets — rebuild against the current `assembly_valheim.dll` if something stops loading.
+- `BepInEx.AssemblyPublicizer.MSBuild` publicizes game assemblies at compile time; no manual publicizer step.
