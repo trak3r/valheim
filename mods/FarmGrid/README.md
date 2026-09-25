@@ -8,4 +8,4 @@ Modeled on [Venture Farm Grid](https://github.com/OrianaVenture/VentureValheim/t
 2. Place a second crop to lock the row orientation.
 3. Keep planting — further crops snap to the square field.
 
-Spacing uses each plant’s vanilla grow radius (cell = 2× radius). No config.
+Spacing uses each plant’s vanilla grow radius (cell = 2× radius + 0.05 m). Snap positions use the plant root (same origin vanilla uses for “needs room to grow”), not child colliders. No config.

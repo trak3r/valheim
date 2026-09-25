@@ -13,7 +13,7 @@ namespace TeflonTed.FarmGrid
     {
         public const string PluginGuid = "com.teflonted.valheim.farmgrid";
         public const string PluginName = "Teflon Ted's Farm Grid";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.1.1";
 
         private void Awake()
         {
@@ -36,7 +36,10 @@ namespace TeflonTed.FarmGrid
     /// </summary>
     internal static class FarmGrid
     {
-        private const float ExtraSpacing = 0.01f;
+        // Vanilla HaveGrowSpace uses OverlapSphere(m_growRadius) against neighbor colliders.
+        // Cell = 2×radius is the wiki minimum; a little extra covers collider extent / float slop
+        // (flax was browning at ~2×radius with collider-offset positions).
+        private const float ExtraSpacing = 0.05f;
         private const int GridSections = 2;
         private const float GridYOffset = 0.1f;
         private static readonly Color GridColor = new Color(0f, 1f, 0f, 0.35f);
@@ -76,11 +79,13 @@ namespace TeflonTed.FarmGrid
         {
             internal Vector3 Position;
             internal readonly float Growth;
+            internal readonly int Id;
 
-            internal PlantObject(Vector3 position, float growth)
+            internal PlantObject(Vector3 position, float growth, int id)
             {
                 Position = position;
                 Growth = growth;
+                Id = id;
             }
         }
 
@@ -171,24 +176,42 @@ namespace TeflonTed.FarmGrid
                 return false;
             }
 
-            string rootName = collider.transform.root != null
-                ? collider.transform.root.name
-                : collider.gameObject.name;
+            // Prefer the Plant component: HaveGrowSpace checks from Plant.transform.position,
+            // not child collider centers (which can sit off-axis and shrink snap spacing).
+            Plant live = collider.GetComponentInParent<Plant>() ??
+                         collider.GetComponentInChildren<Plant>(true);
 
-            if (!TryGetSize(rootName, out float size))
+            string prefab;
+            Vector3 position;
+            float size;
+            int id;
+
+            if (live != null)
             {
-                // Live Plant component fallback (placement ghost / odd prefabs).
-                Plant live = collider.GetComponentInParent<Plant>() ??
-                             collider.GetComponentInChildren<Plant>(true);
-                if (live == null)
+                prefab = PrefabName(live.gameObject.name);
+                position = live.transform.position;
+                id = live.GetInstanceID();
+                if (!TryGetSize(prefab, out size))
+                {
+                    size = Mathf.Max(0f, live.m_growRadius);
+                }
+            }
+            else
+            {
+                Transform root = collider.transform.root != null
+                    ? collider.transform.root
+                    : collider.transform;
+                prefab = PrefabName(root.name);
+                if (!TryGetSize(prefab, out size))
                 {
                     return false;
                 }
 
-                size = Mathf.Max(0f, live.m_growRadius);
+                position = root.position;
+                id = root.GetInstanceID();
             }
 
-            plant = new PlantObject(collider.transform.position, size);
+            plant = new PlantObject(position, size, id);
             return true;
         }
 
@@ -200,6 +223,7 @@ namespace TeflonTed.FarmGrid
                 .OrderBy(c => (c.transform.position - (_ghost?.Position ?? position)).sqrMagnitude);
 
             var plants = new List<PlantObject>();
+            var seen = new HashSet<int>();
             foreach (Collider hit in ordered)
             {
                 if (!TryGetPlant(hit, out PlantObject plant))
@@ -214,17 +238,7 @@ namespace TeflonTed.FarmGrid
                     continue;
                 }
 
-                bool duplicate = false;
-                for (int i = 0; i < plants.Count; i++)
-                {
-                    if ((plants[i].Position - plant.Position).sqrMagnitude < 0.0004f)
-                    {
-                        duplicate = true;
-                        break;
-                    }
-                }
-
-                if (duplicate)
+                if (!seen.Add(plant.Id))
                 {
                     continue;
                 }
@@ -431,6 +445,8 @@ namespace TeflonTed.FarmGrid
             Collider col = player.m_placementGhost.GetComponentInChildren<Collider>();
             if (TryGetPlant(col, out PlantObject plant))
             {
+                // Ghost snap math must use the placement root, not a child collider.
+                plant.Position = player.m_placementGhost.transform.position;
                 _ghost = plant;
                 _ghostPos = plant.Position;
             }
@@ -441,9 +457,17 @@ namespace TeflonTed.FarmGrid
                              player.m_placementGhost.GetComponentInChildren<Plant>(true);
                 if (live != null)
                 {
+                    float size = Mathf.Max(0f, live.m_growRadius);
+                    string prefab = PrefabName(live.gameObject.name);
+                    if (TryGetSize(prefab, out float cached))
+                    {
+                        size = cached;
+                    }
+
                     _ghost = new PlantObject(
                         player.m_placementGhost.transform.position,
-                        Mathf.Max(0f, live.m_growRadius));
+                        size,
+                        live.GetInstanceID());
                     _ghostPos = _ghost.Position;
                 }
             }
