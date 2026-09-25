@@ -9,7 +9,7 @@ namespace TeflonTed.AutoEat
     {
         public const string PluginGuid = "com.teflonted.valheim.autoeat";
         public const string PluginName = "Teflon Ted's Auto Eat";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         private void Awake()
         {
@@ -20,14 +20,21 @@ namespace TeflonTed.AutoEat
 
     /// <summary>
     /// When a food buff expires naturally this food-tick, re-eat the same food from inventory if available.
+    /// Prefers the original stack (often on the hotbar) then any matching stack including hotbar row y==0.
     /// </summary>
     [HarmonyPatch(typeof(Player), "UpdateFood")]
     internal static class Player_UpdateFood_Patch
     {
         private const float FoodTickInterval = 1f;
 
-        private static readonly List<string> Expiring = new List<string>();
+        private static readonly List<PendingEat> Expiring = new List<PendingEat>();
         private static int Depth;
+
+        private struct PendingEat
+        {
+            public string SharedName;
+            public ItemDrop.ItemData OriginalStack;
+        }
 
         private static void Prefix(Player __instance, float dt, bool forceUpdate)
         {
@@ -68,7 +75,13 @@ namespace TeflonTed.AutoEat
                 // This tick subtracts FoodTickInterval from m_time; <= 0 removes the buff.
                 if (food.m_time <= FoodTickInterval)
                 {
-                    Expiring.Add(food.m_item.m_shared.m_name);
+                    // EatFood stores a live reference to the inventory stack that was eaten
+                    // (commonly the hotbar). Keep it so we can consume that stack first.
+                    Expiring.Add(new PendingEat
+                    {
+                        SharedName = food.m_item.m_shared.m_name,
+                        OriginalStack = food.m_item,
+                    });
                 }
             }
         }
@@ -96,9 +109,9 @@ namespace TeflonTed.AutoEat
             Depth++;
             try
             {
-                foreach (string sharedName in Expiring)
+                foreach (PendingEat pending in Expiring)
                 {
-                    var item = inventory.GetItem(sharedName, -1, isPrefabName: false);
+                    var item = FindFoodStack(inventory, pending);
                     if (item == null)
                     {
                         continue;
@@ -117,6 +130,52 @@ namespace TeflonTed.AutoEat
                 Depth--;
                 Expiring.Clear();
             }
+        }
+
+        /// <summary>
+        /// Resolve a stack to eat: original buff stack if still in inventory, else any match
+        /// (hotbar row y==0 preferred, then the rest of the bag).
+        /// </summary>
+        private static ItemDrop.ItemData FindFoodStack(Inventory inventory, PendingEat pending)
+        {
+            if (pending.OriginalStack != null
+                && pending.OriginalStack.m_stack > 0
+                && inventory.ContainsItem(pending.OriginalStack))
+            {
+                return pending.OriginalStack;
+            }
+
+            if (string.IsNullOrEmpty(pending.SharedName))
+            {
+                return null;
+            }
+
+            ItemDrop.ItemData bagMatch = null;
+            foreach (ItemDrop.ItemData item in inventory.GetAllItems())
+            {
+                if (item?.m_shared == null || item.m_stack <= 0)
+                {
+                    continue;
+                }
+
+                if (item.m_shared.m_name != pending.SharedName)
+                {
+                    continue;
+                }
+
+                // Hotbar is inventory row y == 0 — prefer it (where players usually keep food).
+                if (item.m_gridPos.y == 0)
+                {
+                    return item;
+                }
+
+                if (bagMatch == null)
+                {
+                    bagMatch = item;
+                }
+            }
+
+            return bagMatch;
         }
     }
 }

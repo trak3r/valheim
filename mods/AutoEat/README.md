@@ -8,7 +8,7 @@ When a food buff’s timer hits zero, automatically eat **the same food** again 
 |--------|--------|
 | Trigger | Natural food tick (`Player.UpdateFood`, ~1 s food timer) |
 | Match | Exact same shared item name as the buff that expired |
-| Source | Player inventory only (not chests) |
+| Source | Player inventory only (not chests), including hotbar |
 | Guards | Skips if dead, can’t eat, or nested re-entry from eating |
 
 ```mermaid
@@ -48,5 +48,5 @@ Inspired by simpler auto-eat ideas in mods like Hunger Pangs / HungerPangsPlus, 
 
 ## Tips
 
-- Keep stacks of the foods you actually run (e.g. your usual three) in the bag.
+- Keep stacks of the foods you actually run (e.g. your usual three) in the bag or on the hotbar — both work. The original stack you ate from is preferred.
 - Manually clearing a food icon does **not** trigger a refill (only timer expiry does).
