@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.FarmGrid</RootNamespace>
+    <AssemblyName>TeflonTed.FarmGrid</AssemblyName>
+    <Description>Teflon Ted's Farm Grid — snap cultivator planting to optimally spaced rows</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+  </PropertyGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>

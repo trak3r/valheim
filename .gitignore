@@ -31,3 +31,8 @@ Thumbs.db
 ## Packages
 packages/
 *.nupkg
+
+## Scratch / decompile
+.tmp-*/
+.tmp-cecil/
+.tmp-farmgrid/

@@ -35,6 +35,7 @@ flowchart TB
 | [Auto Repair](mods/AutoRepair) | Opening a station repairs all worn items it can repair | On station UI |
 | [Everything Floats](mods/EverythingFloats) | Dropped items float on water | On item DB load |
 | [Auto Eat](mods/AutoEat) | Re-eat the same food when its buff fully expires | On food tick |
+| [Farm Grid](mods/FarmGrid) | Cultivator snaps plants to optimally spaced rows | Near existing plants |
 
 Shared helpers: [`common/TeflonTed.Common`](common/TeflonTed.Common) (nearby containers, item drops, smelter intake math).
 
