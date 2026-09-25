@@ -38,6 +38,10 @@
       <HintPath>$(MANAGED_PATH)\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(MANAGED_PATH)\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>$(MANAGED_PATH)\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>false</Private>

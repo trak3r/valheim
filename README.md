@@ -11,10 +11,12 @@ flowchart TB
     FuelC[Fuel From Chests]
     FuelG[Fuel From Ground]
     Fog[No Ocean Fog]
+    Mist[Thinner Mist]
     Lights[Eternal Lights]
     Repair[Auto Repair]
     Float[Everything Floats]
     Eat[Auto Eat]
+    Farm[Farm Grid]
   end
   Craft --> Common
   Sort --> Common
@@ -31,6 +33,7 @@ flowchart TB
 | [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / etc. pull fuel & ore from adjacent chests | ~4 m from intakes; auto + manual E |
 | [Fuel From Ground](mods/FuelFromGround) | Same stations suck matching item drops off the ground | ~4 m; assembly-line friendly |
 | [No Ocean Fog](mods/NoOceanFog) | Removes Misty whiteout weather (all biomes) | Always on |
+| [Thinner Mist](mods/ThinnerMist) | Lighter Mistlands mist, slightly more visibility | Mistlands ParticleMist |
 | [Eternal Lights](mods/EternalLights) | Fireplace lights never burn out | Always on |
 | [Auto Repair](mods/AutoRepair) | Opening a station repairs all worn items it can repair | On station UI |
 | [Everything Floats](mods/EverythingFloats) | Dropped items float on water | On item DB load |
