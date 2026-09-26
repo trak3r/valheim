@@ -12,7 +12,7 @@ namespace TeflonTed.FuelFromChests
     {
         public const string PluginGuid = "com.teflonted.valheim.fuelfromchests";
         public const string PluginName = "Teflon Ted's Fuel From Chests";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.1.0";
 
         private void Awake()
         {
@@ -72,8 +72,20 @@ namespace TeflonTed.FuelFromChests
 
             foreach (var conversion in smelter.m_conversion)
             {
-                string shared = conversion?.m_from?.m_itemData?.m_shared?.m_name;
-                if (shared != null && NearbyContainers.CountItem(chests, shared) > 0)
+                var from = conversion?.m_from;
+                if (from?.m_itemData?.m_shared == null)
+                {
+                    continue;
+                }
+
+                string shared = from.m_itemData.m_shared.m_name;
+                string prefab = SmelterFuel.PrefabName(from.gameObject.name);
+                if (SmelterFuel.IsPremiumWood(prefab, shared))
+                {
+                    continue;
+                }
+
+                if (NearbyContainers.CountItem(chests, shared) > 0)
                 {
                     return true;
                 }
@@ -124,6 +136,11 @@ namespace TeflonTed.FuelFromChests
 
                 string sharedName = from.m_itemData.m_shared.m_name;
                 string prefabName = SmelterFuel.PrefabName(from.gameObject.name);
+                if (SmelterFuel.IsPremiumWood(prefabName, sharedName))
+                {
+                    continue;
+                }
+
                 if (NearbyContainers.TakeItem(chests, sharedName, 1) <= 0)
                 {
                     continue;
@@ -203,6 +220,11 @@ namespace TeflonTed.FuelFromChests
 
                 string sharedName = from.m_itemData.m_shared.m_name;
                 string prefabName = SmelterFuel.PrefabName(from.gameObject.name);
+                if (SmelterFuel.IsPremiumWood(prefabName, sharedName))
+                {
+                    continue;
+                }
+
                 if (NearbyContainers.TakeItem(chests, sharedName, 1) <= 0)
                 {
                     continue;

@@ -23,22 +23,22 @@ flowchart LR
 
 | Structure | Takes as fuel | Takes as input (“ore”) | Produces |
 |-----------|---------------|-------------------------|----------|
-| Charcoal kiln | — | Wood types (see below) | Coal |
+| Charcoal kiln | — | **Plain wood only** (auto-feed never takes fine/core/…) | Coal |
 | Smelter | Coal | Tin / copper / iron scrap / silver / … | Ingots |
 | Blast furnace | Coal | Black metal scrap, flametal ore, … | Black metal / flametal |
 | Windmill | — | Barley | Barley flour |
 | Spinning wheel | — | Flax | Linen thread |
 
-Exact accept lists come from each prefab’s `m_fuelItem` and `m_conversion` — anything vanilla (or a mod) wires into that station works.
+Exact accept lists come from each prefab’s `m_fuelItem` and `m_conversion` — anything vanilla (or a mod) wires into that station works, **except** kiln auto-feed skips premium woods (see below).
 
-### Common kiln wood inputs
+### Kiln wood (auto-feed)
 
-| Item (typical) | Role |
-|----------------|------|
-| Wood | Charcoal input |
-| Fine wood | Charcoal input |
-| Core wood | Charcoal input |
-| Round log / similar wood prefabs | If listed on that kiln’s conversion table |
+| Item | Auto from chests / ground? | Manual hand insert? |
+|------|----------------------------|---------------------|
+| Wood (plain) | Yes | Yes |
+| Fine wood | No | Yes (vanilla) |
+| Core wood (`RoundLog`) | No | Yes (vanilla) |
+| Ancient bark / yggdrasil / ashwood | No | Yes if the kiln accepts it |
 
 ### Common smelter / blast-furnace pairs
 
@@ -77,3 +77,4 @@ Exact accept lists come from each prefab’s `m_fuelItem` and `m_conversion` —
 - Does not pull from ground drops ([Fuel From Ground](../FuelFromGround) does that)
 - Does not empty finished products into chests
 - Does not use the ~20 m craft radius
+- Does not auto-feed fine wood, core wood, or other premium woods into kilns

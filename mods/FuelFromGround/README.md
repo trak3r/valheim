@@ -23,13 +23,13 @@ flowchart LR
 
 | Structure | Will pick up from ground | Becomes |
 |-----------|--------------------------|---------|
-| Charcoal kiln | Wood / fine wood / core wood / … | Coal (queued as kiln input) |
+| Charcoal kiln | **Plain wood only** (not fine/core/…) | Coal (queued as kiln input) |
 | Smelter | Coal (fuel), ores / scrap (input) | Ingots |
 | Blast furnace | Coal, black metal scrap, flametal ore, … | Alloys |
 | Windmill | Barley | Barley flour |
 | Spinning wheel | Flax | Linen thread |
 
-Acceptance uses the station’s own fuel item + `IsItemAllowed` conversion list — same rules as inserting by hand.
+Acceptance uses the station’s own fuel item + `IsItemAllowed` conversion list — same rules as inserting by hand, **except** kilns never auto-suck fine wood, core wood, or other premium woods (plain `Wood` only). Manual hand-loading those is unchanged.
 
 ## Example assembly line
 

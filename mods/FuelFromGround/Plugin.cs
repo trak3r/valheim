@@ -12,7 +12,7 @@ namespace TeflonTed.FuelFromGround
     {
         public const string PluginGuid = "com.teflonted.valheim.fuelfromground";
         public const string PluginName = "Teflon Ted's Fuel From Ground";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.1.0";
 
         private void Awake()
         {

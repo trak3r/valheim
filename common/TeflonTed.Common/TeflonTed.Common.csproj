@@ -3,7 +3,7 @@
     <RootNamespace>TeflonTed.Common</RootNamespace>
     <AssemblyName>TeflonTed.Common</AssemblyName>
     <Description>Shared helpers for Teflon Ted's Valheim mods</Description>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <IsValheimPlugin>false</IsValheimPlugin>
   </PropertyGroup>
   <Import Project="..\..\ValheimReferences.targets" />

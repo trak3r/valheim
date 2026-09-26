@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -25,6 +26,32 @@ namespace TeflonTed.Common
 
         private static readonly System.Reflection.MethodInfo IsItemAllowedMethod =
             AccessTools.Method(typeof(Smelter), "IsItemAllowed", new[] { typeof(string) });
+
+        /// <summary>
+        /// Building woods the charcoal kiln also accepts — never auto-fed; only plain Wood.
+        /// Prefab ids (RoundLog = core wood, Blackwood = ashwood).
+        /// </summary>
+        private static readonly HashSet<string> PremiumWoodPrefabs =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "FineWood",
+                "RoundLog",
+                "ElderBark",
+                "YggdrasilWood",
+                "Blackwood",
+                "AshWood",
+            };
+
+        private static readonly HashSet<string> PremiumWoodShared =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "$item_finewood",
+                "$item_roundlog",
+                "$item_elderbark",
+                "$item_yggdrasilwood",
+                "$item_blackwood",
+                "$item_ashwood",
+            };
 
         /// <summary>
         /// World points where players dump fuel/ore. Blast furnaces put ore and coal on
@@ -147,8 +174,38 @@ namespace TeflonTed.Common
             return item?.m_shared != null && IsFuelItem(smelter, item.m_shared.m_name);
         }
 
+        /// <summary>
+        /// Fine / core / ancient / yggdrasil / ash woods — kiln-legal but too valuable to
+        /// auto-feed. Plain <c>Wood</c> is allowed.
+        /// </summary>
+        public static bool IsPremiumWood(string prefabName, string sharedName = null)
+        {
+            if (!string.IsNullOrEmpty(prefabName) &&
+                PremiumWoodPrefabs.Contains(PrefabName(prefabName) ?? prefabName))
+            {
+                return true;
+            }
+
+            return !string.IsNullOrEmpty(sharedName) && PremiumWoodShared.Contains(sharedName);
+        }
+
+        public static bool IsPremiumWood(ItemDrop.ItemData item)
+        {
+            if (item?.m_shared == null)
+            {
+                return false;
+            }
+
+            return IsPremiumWood(PrefabName(item), item.m_shared.m_name);
+        }
+
         public static bool IsOreItem(Smelter smelter, ItemDrop.ItemData item)
         {
+            if (IsPremiumWood(item))
+            {
+                return false;
+            }
+
             string prefab = PrefabName(item);
             if (smelter == null || string.IsNullOrEmpty(prefab) || IsItemAllowedMethod == null)
             {
@@ -186,10 +243,16 @@ namespace TeflonTed.Common
         /// <summary>
         /// Prefer fuel when the station uses it; otherwise accept conversion ("ore") inputs
         /// such as wood for a charcoal kiln, barley for a windmill, or flax for a spinning wheel.
+        /// Skips premium woods (fine/core/…) — only plain Wood is auto-fed to kilns.
         /// </summary>
         public static bool TryAcceptItem(Smelter smelter, ItemDrop.ItemData item)
         {
             if (smelter == null || item?.m_shared == null)
+            {
+                return false;
+            }
+
+            if (IsPremiumWood(item))
             {
                 return false;
             }

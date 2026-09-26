@@ -3,7 +3,7 @@
     <RootNamespace>TeflonTed.FuelFromChests</RootNamespace>
     <AssemblyName>TeflonTed.FuelFromChests</AssemblyName>
     <Description>Teflon Ted's Fuel From Chests — kilns/smelters pull fuel from very nearby chests</Description>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <IsValheimPlugin>true</IsValheimPlugin>
     <CopyCommonOnDeploy>true</CopyCommonOnDeploy>
   </PropertyGroup>
