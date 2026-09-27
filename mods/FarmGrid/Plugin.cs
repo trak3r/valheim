@@ -13,7 +13,7 @@ namespace TeflonTed.FarmGrid
     {
         public const string PluginGuid = "com.teflonted.valheim.farmgrid";
         public const string PluginName = "Teflon Ted's Farm Grid";
-        public const string PluginVersion = "1.1.1";
+        public const string PluginVersion = "1.1.2";
 
         private void Awake()
         {
@@ -36,10 +36,10 @@ namespace TeflonTed.FarmGrid
     /// </summary>
     internal static class FarmGrid
     {
-        // Vanilla HaveGrowSpace uses OverlapSphere(m_growRadius) against neighbor colliders.
-        // Cell = 2×radius is the wiki minimum; a little extra covers collider extent / float slop
-        // (flax was browning at ~2×radius with collider-offset positions).
-        private const float ExtraSpacing = 0.05f;
+        // Vanilla HaveGrowSpace: OverlapSphere(m_growRadius) vs neighbor colliders.
+        // Cell must clear growRadius + collider extent; we use 2×max(radius, horizExtent)
+        // so fat colliders (barley, etc.) are not packed tighter than the grow check allows.
+        private const float ExtraSpacing = 0.1f;
         private const int GridSections = 2;
         private const float GridYOffset = 0.1f;
         private static readonly Color GridColor = new Color(0f, 1f, 0f, 0.35f);
@@ -145,6 +145,35 @@ namespace TeflonTed.FarmGrid
         private static float SearchRadius(PlantObject plant) =>
             Spacing(plant.Growth) * (GridSections + 1);
 
+        /// <summary>
+        /// Effective clearance radius: max of Plant.m_growRadius and the widest horizontal
+        /// collider extent on the plant (HaveGrowSpace blocks on collider hits, not on
+        /// idealized radius disks alone).
+        /// </summary>
+        private static float EffectiveGrowth(float growRadius, Component host)
+        {
+            float size = Mathf.Max(0f, growRadius);
+            if (host == null)
+            {
+                return size;
+            }
+
+            Collider[] cols = host.GetComponentsInChildren<Collider>(true);
+            for (int i = 0; i < cols.Length; i++)
+            {
+                Collider c = cols[i];
+                if (c == null || !c.enabled)
+                {
+                    continue;
+                }
+
+                Vector3 e = c.bounds.extents;
+                size = Mathf.Max(size, e.x, e.z);
+            }
+
+            return size;
+        }
+
         private static string PrefabName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -183,17 +212,19 @@ namespace TeflonTed.FarmGrid
 
             string prefab;
             Vector3 position;
-            float size;
+            float growRadius;
             int id;
+            Component host;
 
             if (live != null)
             {
                 prefab = PrefabName(live.gameObject.name);
                 position = live.transform.position;
                 id = live.GetInstanceID();
-                if (!TryGetSize(prefab, out size))
+                host = live;
+                if (!TryGetSize(prefab, out growRadius))
                 {
-                    size = Mathf.Max(0f, live.m_growRadius);
+                    growRadius = Mathf.Max(0f, live.m_growRadius);
                 }
             }
             else
@@ -202,16 +233,17 @@ namespace TeflonTed.FarmGrid
                     ? collider.transform.root
                     : collider.transform;
                 prefab = PrefabName(root.name);
-                if (!TryGetSize(prefab, out size))
+                if (!TryGetSize(prefab, out growRadius))
                 {
                     return false;
                 }
 
                 position = root.position;
                 id = root.GetInstanceID();
+                host = root;
             }
 
-            plant = new PlantObject(position, size, id);
+            plant = new PlantObject(position, EffectiveGrowth(growRadius, host), id);
             return true;
         }
 
@@ -457,16 +489,16 @@ namespace TeflonTed.FarmGrid
                              player.m_placementGhost.GetComponentInChildren<Plant>(true);
                 if (live != null)
                 {
-                    float size = Mathf.Max(0f, live.m_growRadius);
+                    float growRadius = Mathf.Max(0f, live.m_growRadius);
                     string prefab = PrefabName(live.gameObject.name);
                     if (TryGetSize(prefab, out float cached))
                     {
-                        size = cached;
+                        growRadius = cached;
                     }
 
                     _ghost = new PlantObject(
                         player.m_placementGhost.transform.position,
-                        size,
+                        EffectiveGrowth(growRadius, live),
                         live.GetInstanceID());
                     _ghostPos = _ghost.Position;
                 }

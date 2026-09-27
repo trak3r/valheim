@@ -9,7 +9,7 @@ Modeled on [Venture Farm Grid](https://github.com/OrianaVenture/VentureValheim/t
 | Aspect | Detail |
 |--------|--------|
 | Tool | Cultivator placement ghost |
-| Cell size | `2 × m_growRadius + 0.05 m` per crop type |
+| Cell size | `2 × max(growRadius, collider extent) + 0.1 m` per crop |
 | Snap origin | Plant root (same point vanilla uses for grow-space checks) |
 | Visual | Green grid lines while placing near existing crops |
 | Config | None |
@@ -38,17 +38,17 @@ Walk away from plants (or put the cultivator away) and the grid hides; start a n
 
 | Rule | Why |
 |------|-----|
-| Cell = 2 × grow radius + 0.05 m | Matches vanilla “needs room to grow” (wiki minimum) plus a small collider/float margin |
-| Per crop type | Flax, barley, carrots, etc. each use their own `m_growRadius` |
-| Root position, not child colliders | Off-center colliders were shrinking flax rows and browning plants |
+| Cell = 2 × clearance + 0.1 m | Clearance is `max(m_growRadius, widest horizontal collider)` so fat colliders (e.g. barley) are not packed inside vanilla’s grow check |
+| Per crop type | Flax, barley, carrots, etc. each measure their own plant + colliders |
+| Root position, not child collider centers | Off-center colliders were shrinking rows and browning plants |
 
 ## Examples
 
 | You’re planting | Nearby plants | Result |
 |-----------------|---------------|--------|
-| Flax | One flax | Ghost snaps ~1.05 m from that root; grid pivots freely |
-| Flax | Two flax already on a row | Orientation locks; further flax fill the square |
-| Carrot next to flax | Mixed radii | Cell uses the larger of ghost vs neighbor grow radius |
+| Flax | One flax | Ghost snaps from that root using flax clearance; grid pivots freely |
+| Barley | Two barley already on a row | Orientation locks; cells use barley collider-aware clearance |
+| Carrot next to flax | Mixed radii | Cell uses the larger of ghost vs neighbor clearance |
 | Cultivator, no plants nearby | — | No grid; vanilla free placement |
 
 ## What it does **not** do
@@ -65,4 +65,4 @@ Walk away from plants (or put the cultivator away) and the grid hides; start a n
 
 - Replant any already-brown crops after updating — tight rows from older snaps won’t heal themselves.
 - Lock the row with the **second** plant carefully; that sets the field angle for everything after.
-- Works for vanilla crops and anything else that uses Valheim’s `Plant` + `m_growRadius`.
+- Works for vanilla crops and anything else that uses Valheim’s `Plant` — spacing respects both grow radius and collider size.
