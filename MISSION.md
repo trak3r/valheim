@@ -19,6 +19,7 @@ I want to create a suite of single-purpose Valheim mods.
 - farm grid. when planting with the cultivator, snap to a local grid around nearby plants so crops land in clean optimally-spaced rows. green grid lines while placing. no config, no growth-restriction bypass, no other kitchen sink.
 - thinner mist. Mistlands volumetric mist is thinner and a bit clearer near the player — Foglands-style ParticleMist tweak without day/night veil, weather, config, or demister gameplay changes. not the same as no-ocean-fog Misty weather.
 - fighting fish. when a hooked fish starts fighting/escaping, show a clear center "Stop reeling!" message and play a short watery SFX (blob jump/land). cue only — no stamina or AI changes.
+- sure potential. Forge of Potential (upgrader) idol upgrades always succeed at 100%; never break gear. still consumes the idol.
 
 # Plan
 

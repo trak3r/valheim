@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.ThinnerMist", "mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.FightingFish", "mods\FightingFish\TeflonTed.FightingFish.csproj", "{A100000D-0000-4000-8000-00000000000D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeflonTed.SurePotential", "mods\SurePotential\TeflonTed.SurePotential.csproj", "{A100000E-0000-4000-8000-00000000000E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +88,9 @@ Global
 		{A100000D-0000-4000-8000-00000000000D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A100000D-0000-4000-8000-00000000000D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A100000D-0000-4000-8000-00000000000D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A100000E-0000-4000-8000-00000000000E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A100000E-0000-4000-8000-00000000000E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A100000E-0000-4000-8000-00000000000E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A100000E-0000-4000-8000-00000000000E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

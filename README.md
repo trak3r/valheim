@@ -18,6 +18,7 @@ flowchart TB
     Eat[Auto Eat]
     Farm[Farm Grid]
     Fish[Fighting Fish]
+    Sure[Sure Potential]
   end
   Craft --> Common
   Sort --> Common
@@ -41,6 +42,7 @@ flowchart TB
 | [Auto Eat](mods/AutoEat) | Re-eat the same food when its buff fully expires | On food tick |
 | [Farm Grid](mods/FarmGrid) | Cultivator snaps plants to optimally spaced rows | Near existing plants |
 | [Fighting Fish](mods/FightingFish) | Center "Stop reeling!" + splash SFX when fish fights | On fish escape start |
+| [Sure Potential](mods/SurePotential) | Forge of Potential upgrades always succeed | On idol item DB load |
 
 Shared helpers: [`common/TeflonTed.Common`](common/TeflonTed.Common) (nearby containers, item drops, smelter intake math).
 
