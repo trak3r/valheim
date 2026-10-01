@@ -10,7 +10,7 @@ namespace TeflonTed.FightingFish
     {
         public const string PluginGuid = "com.teflonted.valheim.fightingfish";
         public const string PluginName = "Teflon Ted's Fighting Fish";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         private void Awake()
         {
@@ -20,13 +20,34 @@ namespace TeflonTed.FightingFish
     }
 
     /// <summary>
+    /// OnHooked always calls Escape() for the first fight. Skip that one so our
+    /// center message does not cover vanilla "$msg_fishing_hooked".
+    /// </summary>
+    [HarmonyPatch(typeof(Fish), nameof(Fish.OnHooked))]
+    internal static class Fish_OnHooked_Patch
+    {
+        private static void Prefix()
+        {
+            Fish_Escape_Patch.SuppressNextCue = true;
+        }
+
+        private static void Postfix()
+        {
+            // Escape may not run (invalid nview); clear so a later fight still cues.
+            Fish_Escape_Patch.SuppressNextCue = false;
+        }
+    }
+
+    /// <summary>
     /// Vanilla fish escape (fight) has no dedicated HUD/SFX — only subtle thrashing.
     /// When Escape() fires on a hooked fish owned by the local player, flash a center
-    /// message and play a watery blob plop so you know to ease off the reel.
+    /// message and play a water splash so you know to ease off the reel.
     /// </summary>
     [HarmonyPatch(typeof(Fish), nameof(Fish.Escape))]
     internal static class Fish_Escape_Patch
     {
+        internal static bool SuppressNextCue;
+
         // Water land splash first; blob plops as fallbacks if renamed.
         private static readonly string[] FightSfxPrefabs =
         {
@@ -37,6 +58,12 @@ namespace TeflonTed.FightingFish
 
         private static void Postfix(Fish __instance)
         {
+            if (SuppressNextCue)
+            {
+                SuppressNextCue = false;
+                return;
+            }
+
             if (__instance == null || !__instance.IsHooked())
             {
                 return;

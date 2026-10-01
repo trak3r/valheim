@@ -6,9 +6,9 @@ When a hooked fish starts fighting (escape phase), flash **Stop reeling!** in th
 
 | Aspect | Detail |
 |--------|--------|
-| Trigger | `Fish.Escape()` while hooked (hook start + each later fight cycle) |
+| Trigger | `Fish.Escape()` while hooked (each fight cycle **after** the initial hook) |
 | Who | Local player who owns the fishing float only |
-| Message | Center HUD: `Stop reeling!` |
+| Message | Center HUD: `Stop reeling!` (skipped on hook so `$msg_fishing_hooked` stays visible) |
 | Sound | `sfx_land_water`, then `sfx_blob_jump`, then `sfx_blob_land` |
 | Config | None |
 
@@ -44,5 +44,5 @@ Other candidates if you want to fork the cue later: `sfx_blob_attack` (more aggr
 
 ## Tips
 
-- Fight phases still alternate with idle; cue fires at the **start** of each fight, including the one right when you hook.
+- Fight phases still alternate with idle; cue fires at the **start** of each fight **after** the first (hook keeps vanilla “Hooked”).
 - Ease off block/reel while the message is up; reel again when the fish calms (no message).
