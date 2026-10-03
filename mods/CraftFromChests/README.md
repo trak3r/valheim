@@ -10,11 +10,12 @@ Craft and build using materials in nearby chests — not only your backpack.
 
 | Aspect | Detail |
 |--------|--------|
-| When | Crafting, building, and consuming recipe materials |
+| When | Crafting, building, cooking, and consuming recipe materials |
 | Where | Containers within **~20 m** of the player |
 | What | Any item a recipe/piece requires |
 | Order | Player inventory first, then chests |
 | Access | Only chests you can open (guards / ownership respected) |
+| UI | Requirement amount shows `need (chests)` — e.g. `10 (42)` |
 
 ```mermaid
 flowchart LR
@@ -48,7 +49,9 @@ Locked / ward-blocked chests you cannot open are skipped.
 |--------|---------------------|
 | Crafting station recipes | Yes |
 | Building with the hammer | Yes |
-| UI “have / need” counts | Yes (while requirements are evaluated) |
+| Cooking (cauldron, etc.) | Yes |
+| Requirement row text | Yes — `need (in nearby chests)` |
+| Enough-to-craft coloring | Yes (bag + chests) |
 | Repair costs | Only if those paths check inventory the same way |
 
 ## What it does **not** do

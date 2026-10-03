@@ -3,6 +3,7 @@ using System.Reflection;
 using BepInEx;
 using HarmonyLib;
 using TeflonTed.Common;
+using TMPro;
 using UnityEngine;
 
 namespace TeflonTed.CraftFromChests
@@ -12,7 +13,7 @@ namespace TeflonTed.CraftFromChests
     {
         public const string PluginGuid = "com.teflonted.valheim.craftfromchests";
         public const string PluginName = "Teflon Ted's Craft From Chests";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.1.0";
 
         private void Awake()
         {
@@ -63,6 +64,17 @@ namespace TeflonTed.CraftFromChests
                 _playerInventory = null;
                 _chests = null;
             }
+        }
+
+        /// <summary>Chest-only count for the current craft scope (0 if none / inactive).</summary>
+        internal static int CountInChests(string name, int quality = -1)
+        {
+            if (_chests == null || string.IsNullOrEmpty(name))
+            {
+                return 0;
+            }
+
+            return NearbyContainers.CountItem(_chests, name, quality);
         }
 
         internal static void AddChestCount(Inventory inventory, string name, int quality, bool matchWorldLevel, ref int result)
@@ -142,11 +154,66 @@ namespace TeflonTed.CraftFromChests
         private static void Postfix() => CraftScope.Exit();
     }
 
+    /// <summary>
+    /// Craft / cook / build requirement rows all call this. Append "(chests)" next to
+    /// the needed amount so you can see nearby storage without opening them.
+    /// </summary>
     [HarmonyPatch(typeof(InventoryGui), "SetupRequirement")]
     internal static class InventoryGui_SetupRequirement_Patch
     {
         private static void Prefix(Player player) => CraftScope.Enter(player);
-        private static void Postfix() => CraftScope.Exit();
+
+        private static void Postfix(
+            Transform elementRoot,
+            Piece.Requirement req,
+            Player player,
+            int quality,
+            int craftMultiplier)
+        {
+            try
+            {
+                AppendChestAvailability(elementRoot, req, player, quality, craftMultiplier);
+            }
+            finally
+            {
+                CraftScope.Exit();
+            }
+        }
+
+        private static void AppendChestAvailability(
+            Transform elementRoot,
+            Piece.Requirement req,
+            Player player,
+            int quality,
+            int craftMultiplier)
+        {
+            if (player == null || player != Player.m_localPlayer)
+            {
+                return;
+            }
+
+            string shared = req?.m_resItem?.m_itemData?.m_shared?.m_name;
+            if (string.IsNullOrEmpty(shared) || elementRoot == null)
+            {
+                return;
+            }
+
+            int need = req.GetAmount(quality) * craftMultiplier;
+            if (need <= 0)
+            {
+                return;
+            }
+
+            Transform amountRoot = elementRoot.Find("res_amount");
+            TMP_Text amountText = amountRoot != null ? amountRoot.GetComponent<TMP_Text>() : null;
+            if (amountText == null)
+            {
+                return;
+            }
+
+            int inChests = CraftScope.CountInChests(shared);
+            amountText.text = $"{need} ({inChests})";
+        }
     }
 
     [HarmonyPatch(typeof(InventoryGui), "DoCrafting")]

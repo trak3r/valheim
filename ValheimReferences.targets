@@ -50,6 +50,10 @@
       <HintPath>$(MANAGED_PATH)\UnityEngine.UI.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(MANAGED_PATH)\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
