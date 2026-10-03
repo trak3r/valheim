@@ -20,6 +20,7 @@ I want to create a suite of single-purpose Valheim mods.
 - thinner mist. Mistlands volumetric mist is thinner and a bit clearer near the player — Foglands-style ParticleMist tweak without day/night veil, weather, config, or demister gameplay changes. not the same as no-ocean-fog Misty weather.
 - fighting fish. when a hooked fish starts fighting/escaping, show a clear center "Stop reeling!" message and play a short watery SFX (blob jump/land). cue only — no stamina or AI changes.
 - sure potential. Forge of Potential (upgrader) idol upgrades always succeed at 100%; never break gear. still consumes the idol.
+- sort from ground. items on the ground suck into a nearby chest that already contains the same item (e.g. kiln coal spit → coal chest). tight radius, seeded chests only — no empty dumps.
 
 # Plan
 

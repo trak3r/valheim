@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.SortFromGround</RootNamespace>
+    <AssemblyName>TeflonTed.SortFromGround</AssemblyName>
+    <Description>Teflon Ted's Sort From Ground — ground drops suck into nearby chests that already hold that item</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+    <CopyCommonOnDeploy>true</CopyCommonOnDeploy>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\TeflonTed.Common\TeflonTed.Common.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>

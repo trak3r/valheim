@@ -12,6 +12,7 @@ flowchart TB
     Common[TeflonTed.Common]
     Craft[Craft From Chests]
     Sort[Sort Into Chests]
+    SortG[Sort From Ground]
     FuelC[Fuel From Chests]
     FuelG[Fuel From Ground]
     Fog[No Ocean Fog]
@@ -26,6 +27,7 @@ flowchart TB
   end
   Craft --> Common
   Sort --> Common
+  SortG --> Common
   FuelC --> Common
   FuelG --> Common
 ```
@@ -36,6 +38,7 @@ flowchart TB
 |-----|-----------|------------------|
 | [Craft From Chests](mods/CraftFromChests) | Craft & build using materials in nearby chests | ~20 m around player |
 | [Sort Into Chests](mods/SortIntoChests) | `` ` `` quick-stacks into chests that already hold that item | ~20 m; skips hotbar & equipped |
+| [Sort From Ground](mods/SortFromGround) | Ground drops suck into nearby chests that already hold that item | ~4 m around drop |
 | [Fuel From Chests](mods/FuelFromChests) | Kilns / smelters / etc. pull fuel & ore from adjacent chests | ~4 m from intakes; auto + manual E |
 | [Fuel From Ground](mods/FuelFromGround) | Same stations suck matching item drops off the ground | ~4 m; assembly-line friendly |
 | [No Ocean Fog](mods/NoOceanFog) | Removes Misty whiteout weather (all biomes) | Always on |

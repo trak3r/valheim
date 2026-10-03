@@ -84,5 +84,28 @@ namespace TeflonTed.Common
         {
             return SmelterFuel.PrefabName(component.gameObject.name);
         }
+
+        /// <summary>Destroy a world item drop (owner / local path used by fuel & sort mods).</summary>
+        public static void Destroy(ItemDrop drop)
+        {
+            if (drop == null)
+            {
+                return;
+            }
+
+            var nview = drop.GetComponent<ZNetView>();
+            if (nview != null && nview.IsValid())
+            {
+                nview.Destroy();
+            }
+            else if (ZNetScene.instance != null)
+            {
+                ZNetScene.instance.Destroy(drop.gameObject);
+            }
+            else
+            {
+                Object.Destroy(drop.gameObject);
+            }
+        }
     }
 }

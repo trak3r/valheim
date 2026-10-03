@@ -202,6 +202,55 @@ namespace TeflonTed.Common
                 return 0;
             }
 
+            int deposited = DepositMatching(container, item);
+            if (deposited > 0 && item.m_stack <= 0)
+            {
+                playerInv.RemoveItem(item);
+            }
+
+            return deposited;
+        }
+
+        /// <summary>
+        /// Deposit a world <see cref="ItemDrop"/> into a chest that already contains that item.
+        /// Reduces / destroys the drop. Returns how many were moved.
+        /// </summary>
+        public static int DepositMatchingFromDrop(Container container, ItemDrop drop)
+        {
+            if (container == null || drop?.m_itemData?.m_shared == null || drop.m_itemData.m_stack <= 0)
+            {
+                return 0;
+            }
+
+            int deposited = DepositMatching(container, drop.m_itemData);
+            if (deposited <= 0)
+            {
+                return 0;
+            }
+
+            if (drop.m_itemData.m_stack <= 0)
+            {
+                NearbyItemDrops.Destroy(drop);
+            }
+            else
+            {
+                drop.Save();
+            }
+
+            return deposited;
+        }
+
+        /// <summary>
+        /// Move as much of <paramref name="item"/> as fits into a chest that already has that type.
+        /// Decrements <paramref name="item"/>.m_stack; does not remove from any inventory or destroy drops.
+        /// </summary>
+        public static int DepositMatching(Container container, ItemDrop.ItemData item)
+        {
+            if (container == null || item?.m_shared == null || item.m_stack <= 0)
+            {
+                return 0;
+            }
+
             var inv = container.GetInventory();
             if (inv == null)
             {
@@ -234,11 +283,6 @@ namespace TeflonTed.Common
 
             if (deposited > 0)
             {
-                if (item.m_stack <= 0)
-                {
-                    playerInv.RemoveItem(item);
-                }
-
                 container.Save();
             }
 
