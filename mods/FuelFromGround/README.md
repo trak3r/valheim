@@ -14,15 +14,6 @@ Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck
 | Source | `ItemDrop` pickups on the `item` layer |
 | Rate | Up to **1 item per ~0.5 s** per station |
 
-```mermaid
-flowchart LR
-  Kiln[Charcoal kiln]
-  CoalDrop[Coal pile on ground]
-  Smelter[Smelter]
-  Kiln -->|spits coal| CoalDrop
-  CoalDrop -->|sucked within 4m| Smelter
-```
-
 ## Structures and matching drops
 
 | Structure | Will pick up from ground | Becomes |

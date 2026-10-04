@@ -14,16 +14,6 @@ Removes **Misty** whiteout fog weather everywhere it can roll — Ocean, Plains,
 | Common biomes | Ocean, Plains (also injectable elsewhere) |
 | Not the same as | Mistlands volumetric mist / `ParticleMist` |
 
-```mermaid
-flowchart TD
-  Awake[EnvMan.Awake] --> Purge[Strip Misty from all biome lists]
-  Append[AppendBiomeSetup] --> Purge
-  Select[GetAvailableEnvironments] --> Filter[Never offer Misty]
-  Tick[UpdateEnvironment] --> Active{Misty active now?}
-  Active -->|yes| Clear[Queue Clear weather]
-  Active -->|no| Tick
-```
-
 ## Behavior
 
 | Hook | Purpose |

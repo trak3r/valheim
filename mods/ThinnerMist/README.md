@@ -16,17 +16,6 @@ Thins Mistlands volumetric mist and clears a bit more space near you — same id
 | Look | Soft gray particles, lower alpha, fewer max particles |
 | Config | None |
 
-```mermaid
-flowchart TD
-  Tick[ParticleMist.Update]
-  Biome{Mistlands?}
-  Scale[Scale emission fields from stored originals]
-  Soft[Soften particle color / size / lifetime]
-  Tick --> Biome
-  Biome -->|no| Vanilla[Leave unchanged]
-  Biome -->|yes| Scale --> Soft
-```
-
 ## What changes vs vanilla
 
 | Property | Effect |

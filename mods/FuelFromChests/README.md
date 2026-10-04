@@ -14,15 +14,6 @@ Processing stations pull **fuel** and **inputs** from chests within ~4 m of thei
 | Intake points | Ore switch, fuel/wood switch, windmill hub, piece origin |
 | Why so tight | Avoids draining a distant storage room |
 
-```mermaid
-flowchart LR
-  Chest[Chest within 4m]
-  Station[Kiln / Smelter / Furnace / Windmill / Wheel]
-  Chest -->|auto every ~0.5s| Station
-  Player[Player presses E] -->|if bags empty| Chest
-  Player --> Station
-```
-
 ## Structures (all use Valheim's `Smelter` component)
 
 | Structure | Takes as fuel | Takes as input (“ore”) | Produces |

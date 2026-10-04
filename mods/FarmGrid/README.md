@@ -18,16 +18,6 @@ Modeled on [Venture Farm Grid](https://github.com/OrianaVenture/VentureValheim/t
 | Visual | Green grid lines while placing near existing crops |
 | Config | None |
 
-```mermaid
-flowchart TD
-  First[Place first crop]
-  Free[Grid pivots freely around that root]
-  Second[Place second crop on a grid cell]
-  Lock[Row orientation locks]
-  More[Further crops snap to the square field]
-  First --> Free --> Second --> Lock --> More
-```
-
 ## Workflow
 
 | Step | What you do | What the grid does |

@@ -16,18 +16,6 @@ Forge of Potential (and any other upgrader station) always succeeds — no more 
 | When | `ObjectDB.Awake` / `CopyOtherDB` |
 | Config | None |
 
-```mermaid
-flowchart TD
-  Load[ObjectDB loads items]
-  Idol{Idol / upgrader resource?}
-  Set[Set upgradeChance=1, breakChance=0]
-  Craft[DoCrafting roll]
-  Win[Always succeed]
-  Load --> Idol
-  Idol -->|no| Skip[Leave alone]
-  Idol -->|yes| Set --> Craft --> Win
-```
-
 ## What it does **not** do
 
 | Feature | Here? |

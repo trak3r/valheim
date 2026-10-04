@@ -14,17 +14,6 @@ Dropped items get Valheim’s `Floating` component so they bob on water instead 
 | What | Every `ItemDrop` prefab with a `Rigidbody` + collider |
 | How | Add/enable `Floating` with `m_waterLevelOffset = 0.7` |
 
-```mermaid
-flowchart TD
-  DB[ObjectDB loads items]
-  Each[Each item prefab]
-  Check{ItemDrop + Rigidbody + Collider?}
-  Float[Add Floating component]
-  DB --> Each --> Check
-  Check -->|yes| Float
-  Check -->|no| Each
-```
-
 ## What floats
 
 | Category | Examples |

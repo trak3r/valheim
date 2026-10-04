@@ -14,12 +14,6 @@ Any **Fireplace**-based light stays fueled forever — no resin, wood, or coal b
 | Fuel | Continuously forced to `m_maxFuel` on the owning client |
 | Burning check | Pieces with `m_maxFuel > 0` always report as burning |
 
-```mermaid
-flowchart LR
-  Tick[UpdateFireplace] --> TopUp[Set ZDO fuel = max]
-  Query[IsBurning?] --> Yes[true if maxFuel greater than 0]
-```
-
 ## Typical pieces covered
 
 Anything using `Fireplace` with a fuel capacity, including:

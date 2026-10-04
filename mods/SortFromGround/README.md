@@ -17,18 +17,6 @@ World item drops get sucked into nearby chests that **already contain** the same
 | Rate | At most one try per drop every **~0.5 s** |
 | Config | None |
 
-```mermaid
-flowchart TD
-  Drop[Item lands on ground]
-  Wait[Wait ~1s]
-  Scan[Find chests within 4m]
-  Match{Chest already has this item?}
-  Move[Deposit into chest]
-  Drop --> Wait --> Scan --> Match
-  Match -->|yes| Move
-  Match -->|no| Leave[Leave on ground]
-```
-
 ## Example
 
 | Setup | Result |

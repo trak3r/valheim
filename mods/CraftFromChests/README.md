@@ -17,17 +17,6 @@ Craft and build using materials in nearby chests — not only your backpack.
 | Access | Only chests you can open (guards / ownership respected) |
 | UI | Requirement amount shows `need (chests)` — e.g. `10 (42)` |
 
-```mermaid
-flowchart LR
-  Recipe[Recipe needs 10 Wood]
-  Inv[Player inventory]
-  ChestA[Chest A]
-  ChestB[Chest B]
-  Recipe --> Inv
-  Inv -->|not enough| ChestA
-  ChestA -->|still short| ChestB
-```
-
 ## Which containers count?
 
 Any player-accessible `Container` in range, including:

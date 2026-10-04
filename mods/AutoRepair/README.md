@@ -15,20 +15,6 @@ Open a crafting station and every **worn** inventory item that station can repai
 | Eligibility | Vanilla `InventoryGui.CanRepair` |
 | Station | Must allow repair (`m_canRepair`) and `CheckUsable` (e.g. forge needs fire) |
 
-```mermaid
-flowchart TD
-  Open[Open workbench / forge / ...]
-  Usable{Station usable?}
-  Scan[Collect worn items in inventory]
-  Can{CanRepair for this station?}
-  Fix[Set durability to max]
-  Open --> Usable
-  Usable -->|no| Stop[Do nothing]
-  Usable -->|yes| Scan --> Can
-  Can -->|yes| Fix
-  Can -->|no| Scan
-```
-
 ## Typical station coverage
 
 | Station | Repairs (examples) | Needs |

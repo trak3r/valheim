@@ -10,7 +10,7 @@ namespace TeflonTed.FightingFish
     {
         public const string PluginGuid = "com.teflonted.valheim.fightingfish";
         public const string PluginName = "Teflon Ted's Fighting Fish";
-        public const string PluginVersion = "1.0.1";
+        public const string PluginVersion = "1.0.2";
 
         private void Awake()
         {

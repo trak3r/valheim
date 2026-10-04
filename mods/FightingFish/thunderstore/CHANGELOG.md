@@ -1,3 +1,7 @@
+## 1.0.2
+
+- README: drop Mermaid flowchart (doesn’t render on Thunderstore).
+
 ## 1.0.1
 
 - Skip the fight cue on the initial hook so vanilla **Hooked** stays visible.

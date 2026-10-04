@@ -15,21 +15,6 @@ Press `` ` `` (backtick / tilde key) to shove backpack junk into nearby chests t
 | Matching | Chest must already have at least one of that item |
 | Remainder | Partial stacks fill existing stacks / free slots in matching chests |
 
-```mermaid
-flowchart TD
-  Key[Press backtick]
-  Scan[Find chests within 20m]
-  Item[For each backpack stack]
-  Skip{Equipped or hotbar?}
-  Match{Chest already has this item?}
-  Move[Deposit into chest]
-  Key --> Scan --> Item --> Skip
-  Skip -->|yes| Item
-  Skip -->|no| Match
-  Match -->|yes| Move
-  Match -->|no| Item
-```
-
 ## What moves / what stays
 
 | Inventory slot | Sorted? |

@@ -16,17 +16,6 @@ When a hooked fish starts fighting (escape phase), flash **Stop reeling!** in th
 | Sound | `sfx_land_water`, then `sfx_blob_jump`, then `sfx_blob_land` |
 | Config | None |
 
-```mermaid
-flowchart TD
-  Escape[Fish.Escape]
-  Hooked{Hooked + local owner?}
-  Msg[Center: Stop reeling!]
-  Sfx[Instantiate blob/water SFX]
-  Escape --> Hooked
-  Hooked -->|no| Skip[Do nothing]
-  Hooked -->|yes| Msg --> Sfx
-```
-
 ## Why these sounds
 
 | Prefab | Why |

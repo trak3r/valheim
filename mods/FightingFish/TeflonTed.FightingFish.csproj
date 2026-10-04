@@ -3,7 +3,7 @@
     <RootNamespace>TeflonTed.FightingFish</RootNamespace>
     <AssemblyName>TeflonTed.FightingFish</AssemblyName>
     <Description>Teflon Ted's Fighting Fish — clear cue when a hooked fish starts fighting</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <IsValheimPlugin>true</IsValheimPlugin>
   </PropertyGroup>
   <Import Project="..\..\ValheimReferences.targets" />

@@ -15,20 +15,6 @@ When a food buff’s timer hits zero, automatically eat **the same food** again 
 | Source | Player inventory only (not chests), including hotbar |
 | Guards | Skips if dead, can’t eat, or nested re-entry from eating |
 
-```mermaid
-flowchart TD
-  Tick[Food tick about to burn]
-  Soon{Buff time less than or equal to 1s?}
-  Expire[Vanilla removes the buff]
-  Inv{Same food in inventory?}
-  Eat[ConsumeItem]
-  Tick --> Soon
-  Soon -->|no| Wait[Wait next tick]
-  Soon -->|yes| Expire --> Inv
-  Inv -->|yes| Eat
-  Inv -->|no| Hungry[Slot stays empty]
-```
-
 ## Examples
 
 | Active buffs | Inventory | When honey expires |
