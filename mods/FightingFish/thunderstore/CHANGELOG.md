@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Player-facing Thunderstore README (what / why / how); technical notes stay in the repo README.
+
 ## 1.0.2
 
 - README: drop Mermaid flowchart (doesn’t render on Thunderstore).

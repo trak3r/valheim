@@ -4,7 +4,8 @@
   Build a Valheim mod and produce a Thunderstore-ready ZIP.
 
 .DESCRIPTION
-  Copies README.md, thunderstore/manifest.json, icon.png, CHANGELOG.md, and the
+  Copies thunderstore/manifest.json, icon.png, CHANGELOG.md, a player-facing
+  README (thunderstore/README.md if present, else mods/<Mod>/README.md), and the
   Release DLL (plus TeflonTed.Common.dll when CopyCommonOnDeploy) into a staging
   folder, then zips files at the archive root (not nested in a parent folder).
 
@@ -67,7 +68,10 @@ New-Item -ItemType Directory -Force -Path $plugins | Out-Null
 
 Copy-Item (Join-Path $TsDir "manifest.json") $stage
 Copy-Item (Join-Path $TsDir "icon.png") $stage
-Copy-Item (Join-Path $ModDir "README.md") $stage
+$playerReadme = Join-Path $TsDir "README.md"
+if (-not (Test-Path $playerReadme)) { $playerReadme = Join-Path $ModDir "README.md" }
+if (-not (Test-Path $playerReadme)) { throw "Missing player README (thunderstore/README.md or mods/$Mod/README.md)" }
+Copy-Item $playerReadme (Join-Path $stage "README.md")
 if (Test-Path (Join-Path $TsDir "CHANGELOG.md")) {
     Copy-Item (Join-Path $TsDir "CHANGELOG.md") $stage
 }
