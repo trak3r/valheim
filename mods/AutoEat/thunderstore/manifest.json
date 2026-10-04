@@ -1,0 +1,10 @@
+{
+    "name":  "AutoEat_TT",
+    "version_number":  "1.0.1",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Re-eat the same food when its buff fully expires. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

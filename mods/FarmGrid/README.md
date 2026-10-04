@@ -1,19 +1,19 @@
 # Teflon Ted's Farm Grid
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Snaps cultivator planting to a local grid so crops land in clean, optimally spaced rows — no more guessing “needs room to grow.”
+Snaps cultivator planting to a local grid so crops land in clean, optimally spaced rows â€” no more guessing â€œneeds room to grow.â€
 
-Modeled on [Venture Farm Grid](https://github.com/OrianaVenture/VentureValheim/tree/master/FarmGrid) (Sarcen’s Farm Grid workflow).
+Modeled on [Venture Farm Grid](https://github.com/OrianaVenture/VentureValheim/tree/master/FarmGrid) (Sarcenâ€™s Farm Grid workflow).
 
 ## Behavior
 
 | Aspect | Detail |
 |--------|--------|
 | Tool | Cultivator placement ghost |
-| Cell size | `2 × max(growRadius, collider extent) + 0.1 m` per crop |
+| Cell size | `2 Ã— max(growRadius, collider extent) + 0.1 m` per crop |
 | Snap origin | Plant root (same point vanilla uses for grow-space checks) |
 | Visual | Green grid lines while placing near existing crops |
 | Config | None |
@@ -32,18 +32,18 @@ Walk away from plants (or put the cultivator away) and the grid hides; start a n
 
 | Rule | Why |
 |------|-----|
-| Cell = 2 × clearance + 0.1 m | Clearance is `max(m_growRadius, widest horizontal collider)` so fat colliders (e.g. barley) are not packed inside vanilla’s grow check |
+| Cell = 2 Ã— clearance + 0.1 m | Clearance is `max(m_growRadius, widest horizontal collider)` so fat colliders (e.g. barley) are not packed inside vanillaâ€™s grow check |
 | Per crop type | Flax, barley, carrots, etc. each measure their own plant + colliders |
 | Root position, not child collider centers | Off-center colliders were shrinking rows and browning plants |
 
 ## Examples
 
-| You’re planting | Nearby plants | Result |
+| Youâ€™re planting | Nearby plants | Result |
 |-----------------|---------------|--------|
 | Flax | One flax | Ghost snaps from that root using flax clearance; grid pivots freely |
 | Barley | Two barley already on a row | Orientation locks; cells use barley collider-aware clearance |
 | Carrot next to flax | Mixed radii | Cell uses the larger of ghost vs neighbor clearance |
-| Cultivator, no plants nearby | — | No grid; vanilla free placement |
+| Cultivator, no plants nearby | â€” | No grid; vanilla free placement |
 
 ## What it does **not** do
 
@@ -57,6 +57,6 @@ Walk away from plants (or put the cultivator away) and the grid hides; start a n
 
 ## Tips
 
-- Replant any already-brown crops after updating — tight rows from older snaps won’t heal themselves.
+- Replant any already-brown crops after updating â€” tight rows from older snaps wonâ€™t heal themselves.
 - Lock the row with the **second** plant carefully; that sets the field angle for everything after.
-- Works for vanilla crops and anything else that uses Valheim’s `Plant` — spacing respects both grow radius and collider size.
+- Works for vanilla crops and anything else that uses Valheimâ€™s `Plant` â€” spacing respects both grow radius and collider size.

@@ -1,0 +1,10 @@
+{
+    "name":  "FuelFromGround",
+    "version_number":  "1.1.0",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Kilns, smelters, and mills suck matching item drops off the ground. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

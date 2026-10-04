@@ -1,10 +1,10 @@
 # Teflon Ted's Craft From Chests
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Craft and build using materials in nearby chests — not only your backpack.
+Craft and build using materials in nearby chests â€” not only your backpack.
 
 ## Behavior
 
@@ -15,7 +15,7 @@ Craft and build using materials in nearby chests — not only your backpack.
 | What | Any item a recipe/piece requires |
 | Order | Player inventory first, then chests |
 | Access | Only chests you can open (guards / ownership respected) |
-| UI | Requirement amount shows `need (chests)` — e.g. `10 (42)` |
+| UI | Requirement amount shows `need (chests)` â€” e.g. `10 (42)` |
 
 ## Which containers count?
 
@@ -39,7 +39,7 @@ Locked / ward-blocked chests you cannot open are skipped.
 | Crafting station recipes | Yes |
 | Building with the hammer | Yes |
 | Cooking (cauldron, etc.) | Yes |
-| Requirement row text | Yes — `need (in nearby chests)` |
+| Requirement row text | Yes â€” `need (in nearby chests)` |
 | Enough-to-craft coloring | Yes (bag + chests) |
 | Repair costs | Only if those paths check inventory the same way |
 

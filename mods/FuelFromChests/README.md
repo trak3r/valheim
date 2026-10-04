@@ -1,10 +1,10 @@
 # Teflon Ted's Fuel From Chests
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Processing stations pull **fuel** and **inputs** from chests within ~4 m of their intakes — automatically while running, and when you press **E** with empty hands.
+Processing stations pull **fuel** and **inputs** from chests within ~4 m of their intakes â€” automatically while running, and when you press **E** with empty hands.
 
 ## Range
 
@@ -16,15 +16,15 @@ Processing stations pull **fuel** and **inputs** from chests within ~4 m of thei
 
 ## Structures (all use Valheim's `Smelter` component)
 
-| Structure | Takes as fuel | Takes as input (“ore”) | Produces |
+| Structure | Takes as fuel | Takes as input (â€œoreâ€) | Produces |
 |-----------|---------------|-------------------------|----------|
-| Charcoal kiln | — | **Plain wood only** (auto-feed never takes fine/core/…) | Coal |
-| Smelter | Coal | Tin / copper / iron scrap / silver / … | Ingots |
-| Blast furnace | Coal | Black metal scrap, flametal ore, … | Black metal / flametal |
-| Windmill | — | Barley | Barley flour |
-| Spinning wheel | — | Flax | Linen thread |
+| Charcoal kiln | â€” | **Plain wood only** (auto-feed never takes fine/core/â€¦) | Coal |
+| Smelter | Coal | Tin / copper / iron scrap / silver / â€¦ | Ingots |
+| Blast furnace | Coal | Black metal scrap, flametal ore, â€¦ | Black metal / flametal |
+| Windmill | â€” | Barley | Barley flour |
+| Spinning wheel | â€” | Flax | Linen thread |
 
-Exact accept lists come from each prefab’s `m_fuelItem` and `m_conversion` — anything vanilla (or a mod) wires into that station works, **except** kiln auto-feed skips premium woods (see below).
+Exact accept lists come from each prefabâ€™s `m_fuelItem` and `m_conversion` â€” anything vanilla (or a mod) wires into that station works, **except** kiln auto-feed skips premium woods (see below).
 
 ### Kiln wood (auto-feed)
 
@@ -60,7 +60,7 @@ Exact accept lists come from each prefab’s `m_fuelItem` and `m_conversion` —
 |------|----------|
 | Auto (`UpdateSmelter`) | While the station has room, pull 1 matching item from a nearby chest every ~0.5 s |
 | Manual E (empty bags) | Vanilla would refuse; this mod takes 1 from a nearby chest instead |
-| Manual E (item in bags) | Vanilla path unchanged — inventory wins |
+| Manual E (item in bags) | Vanilla path unchanged â€” inventory wins |
 
 ## Priority
 

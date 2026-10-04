@@ -1,0 +1,10 @@
+{
+    "name":  "ThinnerMist",
+    "version_number":  "1.0.0",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Lighter Mistlands mist with a clearer pocket near you. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

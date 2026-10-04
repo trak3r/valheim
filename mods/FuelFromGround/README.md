@@ -1,10 +1,10 @@
 # Teflon Ted's Fuel From Ground
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck matching **item drops** off the ground within ~4 m — for kiln → smelter style assembly lines.
+Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck matching **item drops** off the ground within ~4 m â€” for kiln â†’ smelter style assembly lines.
 
 ## Range
 
@@ -18,13 +18,13 @@ Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck
 
 | Structure | Will pick up from ground | Becomes |
 |-----------|--------------------------|---------|
-| Charcoal kiln | **Plain wood only** (not fine/core/…) | Coal (queued as kiln input) |
+| Charcoal kiln | **Plain wood only** (not fine/core/â€¦) | Coal (queued as kiln input) |
 | Smelter | Coal (fuel), ores / scrap (input) | Ingots |
-| Blast furnace | Coal, black metal scrap, flametal ore, … | Alloys |
+| Blast furnace | Coal, black metal scrap, flametal ore, â€¦ | Alloys |
 | Windmill | Barley | Barley flour |
 | Spinning wheel | Flax | Linen thread |
 
-Acceptance uses the station’s own fuel item + `IsItemAllowed` conversion list — same rules as inserting by hand, **except** kilns never auto-suck fine wood, core wood, or other premium woods (plain `Wood` only). Manual hand-loading those is unchanged.
+Acceptance uses the stationâ€™s own fuel item + `IsItemAllowed` conversion list â€” same rules as inserting by hand, **except** kilns never auto-suck fine wood, core wood, or other premium woods (plain `Wood` only). Manual hand-loading those is unchanged.
 
 ## Example assembly line
 
@@ -41,7 +41,7 @@ Acceptance uses the station’s own fuel item + `IsItemAllowed` conversion list 
 |-----|------------|
 | Fuel From Chests | Containers |
 | Fuel From Ground | World item drops |
-| Both installed | Both — chests and floor |
+| Both installed | Both â€” chests and floor |
 
 ## What it does **not** do
 

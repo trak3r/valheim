@@ -1,0 +1,10 @@
+{
+    "name":  "SortIntoChests",
+    "version_number":  "1.0.0",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Hotkey quick-stacks backpack into chests that already hold that item. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

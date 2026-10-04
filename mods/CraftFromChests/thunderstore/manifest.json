@@ -1,0 +1,10 @@
+{
+    "name":  "CraftFromChests_TT",
+    "version_number":  "1.1.0",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Craft and build using materials in nearby chests (~20 m). One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

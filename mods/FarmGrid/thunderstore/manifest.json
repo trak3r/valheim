@@ -1,0 +1,10 @@
+{
+    "name":  "FarmGrid_TT",
+    "version_number":  "1.1.2",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Cultivator snaps plants to optimally spaced crop rows. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

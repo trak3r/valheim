@@ -1,10 +1,10 @@
 # Teflon Ted's Sort From Ground
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-World item drops get sucked into nearby chests that **already contain** the same item — kiln coal spit → coal chest, loot piles → seeded storage, etc.
+World item drops get sucked into nearby chests that **already contain** the same item â€” kiln coal spit â†’ coal chest, loot piles â†’ seeded storage, etc.
 
 ## Behavior
 
@@ -29,19 +29,19 @@ World item drops get sucked into nearby chests that **already contain** the same
 
 | Mod | Direction |
 |-----|-----------|
-| [Sort Into Chests](../SortIntoChests) | Player backpack → chests (`` ` `` hotkey, ~20 m) |
-| **Sort From Ground** | World drops → chests (~4 m, automatic) |
-| [Fuel From Ground](../FuelFromGround) | World drops → kiln / smelter / … |
-| [Fuel From Chests](../FuelFromChests) | Chests → kiln / smelter / … |
+| [Sort Into Chests](../SortIntoChests) | Player backpack â†’ chests (`` ` `` hotkey, ~20 m) |
+| **Sort From Ground** | World drops â†’ chests (~4 m, automatic) |
+| [Fuel From Ground](../FuelFromGround) | World drops â†’ kiln / smelter / â€¦ |
+| [Fuel From Chests](../FuelFromChests) | Chests â†’ kiln / smelter / â€¦ |
 
-If a drop is in range of both a seeded chest and a hungry smelter, either mod may win the race — place storage and stations deliberately.
+If a drop is in range of both a seeded chest and a hungry smelter, either mod may win the race â€” place storage and stations deliberately.
 
 ## What it does **not** do
 
 | Feature | Here? |
 |---------|-------|
-| Dump into empty chests | No — seeded only |
+| Dump into empty chests | No â€” seeded only |
 | Pull from chests into your bag | No |
-| Player hotkey sort | No — see [Sort Into Chests](../SortIntoChests) |
-| Feed processing stations | No — see [Fuel From Ground](../FuelFromGround) |
+| Player hotkey sort | No â€” see [Sort Into Chests](../SortIntoChests) |
+| Feed processing stations | No â€” see [Fuel From Ground](../FuelFromGround) |
 | Config / custom radius | No |

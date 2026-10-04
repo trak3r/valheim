@@ -2,8 +2,8 @@
   <PropertyGroup>
     <RootNamespace>TeflonTed.AutoEat</RootNamespace>
     <AssemblyName>TeflonTed.AutoEat</AssemblyName>
-    <Description>Teflon Ted's Auto Eat — re-eat the same food when a buff fully expires</Description>
-    <Version>1.0.0</Version>
+    <Description>Teflon Ted's Auto Eat â€” re-eat the same food when a buff fully expires</Description>
+    <Version>1.0.1</Version>
     <IsValheimPlugin>true</IsValheimPlugin>
   </PropertyGroup>
   <Import Project="..\..\ValheimReferences.targets" />

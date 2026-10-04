@@ -1,0 +1,10 @@
+{
+    "name":  "AutoRepair_TT",
+    "version_number":  "1.0.0",
+    "website_url":  "https://github.com/trak3r/valheim",
+    "description":  "Opening a crafting station repairs all worn items it can fix. One mod, one job.",
+    "dependencies":  [
+                         "denikson-BepInExPack_Valheim-5.4.2351"
+                     ]
+}
+

@@ -1,8 +1,8 @@
 # Teflon Ted's Sort Into Chests
 
-> **One mod, one job** — no kitchen-sink configs or feature creep.
+> **One mod, one job** â€” no kitchen-sink configs or feature creep.
 
-<a href="https://buymeacoffee.com/teflonted"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=teflonted&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" width="174" alt="Buy me a coffee" /></a>
+Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
 Press `` ` `` (backtick / tilde key) to shove backpack junk into nearby chests that **already contain** that item.
 
@@ -32,7 +32,7 @@ Same idea as craft-from-chests: accessible `Container` pieces in range.
 | Wood / reinforced / black metal chests | Yes |
 | Personal chest | If you have access |
 | Cart / ship holds | If in range |
-| Obliterator | Included on this hotkey (extra scan) — still only accepts items it already “matches” via normal deposit rules |
+| Obliterator | Included on this hotkey (extra scan) â€” still only accepts items it already â€œmatchesâ€ via normal deposit rules |
 
 ## Input ignored when
 
@@ -47,6 +47,6 @@ Inventory can stay open; sorting still runs.
 
 ## What it does **not** do
 
-- Does not dump into empty chests (no “first empty slot” fill)
+- Does not dump into empty chests (no â€œfirst empty slotâ€ fill)
 - Does not touch hotbar or equipped items
 - Does not pull from chests into your bag
