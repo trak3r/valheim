@@ -1,0 +1,9 @@
+{
+  "name": "FightingFish",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/trak3r/valheim",
+  "description": "Stop reeling! cue when a hooked fish fights — center message + water splash. One mod, one job.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2351"
+  ]
+}

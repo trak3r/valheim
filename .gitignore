@@ -32,6 +32,9 @@ Thumbs.db
 packages/
 *.nupkg
 
+## Thunderstore build output (keep per-mod thunderstore/ sources)
+dist/
+
 ## Scratch / decompile
 .tmp-*/
 .tmp-cecil/
