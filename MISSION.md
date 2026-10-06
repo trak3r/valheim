@@ -21,6 +21,7 @@ I want to create a suite of single-purpose Valheim mods.
 - fighting fish. when a hooked fish starts fighting/escaping, show a clear center "Stop reeling!" message and play a short watery SFX (blob jump/land). cue only — no stamina or AI changes.
 - sure potential. Forge of Potential (upgrader) idol upgrades always succeed at 100%; never break gear. still consumes the idol.
 - sort from ground. items on the ground suck into a nearby chest that already contains the same item (e.g. kiln coal spit → coal chest). tight radius, seeded chests only — no empty dumps.
+- no drop death. dying keeps inventory; empty tombstone and death map pin still appear. no skill-loss changes, no config.
 
 # Plan
 

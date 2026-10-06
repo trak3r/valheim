@@ -24,6 +24,7 @@ flowchart TB
     Farm[Farm Grid]
     Fish[Fighting Fish]
     Sure[Sure Potential]
+    NoDrop[No Drop Death]
   end
   Craft --> Common
   Sort --> Common
@@ -50,6 +51,7 @@ flowchart TB
 | [Farm Grid](mods/FarmGrid) | Cultivator snaps plants to optimally spaced rows | Near existing plants |
 | [Fighting Fish](mods/FightingFish) | Center "Stop reeling!" + splash SFX when fish fights | On fish escape start |
 | [Sure Potential](mods/SurePotential) | Forge of Potential upgrades always succeed | On idol item DB load |
+| [No Drop Death](mods/NoDropDeath) | Keep inventory on death; empty tombstone + death pin remain | On death |
 
 Shared helpers: [`common/TeflonTed.Common`](common/TeflonTed.Common) (nearby containers, item drops, smelter intake math).
 

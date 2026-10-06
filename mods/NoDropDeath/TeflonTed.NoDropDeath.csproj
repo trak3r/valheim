@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>TeflonTed.NoDropDeath</RootNamespace>
+    <AssemblyName>TeflonTed.NoDropDeath</AssemblyName>
+    <Description>Teflon Ted's No Drop Death — keep inventory on death</Description>
+    <Version>1.0.0</Version>
+    <IsValheimPlugin>true</IsValheimPlugin>
+  </PropertyGroup>
+  <Import Project="..\..\ValheimReferences.targets" />
+</Project>
