@@ -1,10 +1,9 @@
 {
-    "name":  "FuelFromChests_TT",
-    "version_number":  "1.1.0",
-    "website_url":  "https://github.com/trak3r/valheim",
-    "description":  "Kilns, smelters, and mills pull fuel and inputs from nearby chests. One mod, one job.",
-    "dependencies":  [
-                         "denikson-BepInExPack_Valheim-5.4.2351"
-                     ]
+  "name": "FuelFromChests_TT",
+  "version_number": "1.2.0",
+  "website_url": "https://github.com/trak3r/valheim",
+  "description": "Kilns, smelters, mills, and Frost Foundry pull fuel/inputs from nearby chests. One mod, one job.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2351"
+  ]
 }
-

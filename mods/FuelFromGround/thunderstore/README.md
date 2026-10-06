@@ -18,6 +18,6 @@ Lets you run kiln → smelter style assembly lines without picking up every stic
 2. Drop or spit fuel/ore within ~4 m of the station.
 3. Stations pull matching drops automatically.
 
-Kilns only auto-suck plain wood.
+Kilns only auto-suck plain wood. Frost Foundry pulls Liquid Frost drops; stone ovens do not auto-drain wood.
 
 Client-side only — works on any server.

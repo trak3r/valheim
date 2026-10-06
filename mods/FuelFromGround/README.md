@@ -18,13 +18,14 @@ Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck
 
 | Structure | Will pick up from ground | Becomes |
 |-----------|--------------------------|---------|
-| Charcoal kiln | **Plain wood only** (not fine/core/â€¦) | Coal (queued as kiln input) |
+| Charcoal kiln | **Plain wood only** (not fine/core/…) | Coal (queued as kiln input) |
 | Smelter | Coal (fuel), ores / scrap (input) | Ingots |
-| Blast furnace | Coal, black metal scrap, flametal ore, â€¦ | Alloys |
+| Blast furnace | Coal, black metal scrap, flametal ore, … | Alloys |
 | Windmill | Barley | Barley flour |
 | Spinning wheel | Flax | Linen thread |
+| Frost Foundry | **Liquid Frost only** | Foundry fuel |
 
-Acceptance uses the stationâ€™s own fuel item + `IsItemAllowed` conversion list â€” same rules as inserting by hand, **except** kilns never auto-suck fine wood, core wood, or other premium woods (plain `Wood` only). Manual hand-loading those is unchanged.
+Acceptance uses the station's own fuel item + `IsItemAllowed` conversion list — same rules as inserting by hand, **except** kilns never auto-suck fine wood, core wood, or other premium woods (plain `Wood` only). Frost Foundry is Liquid Frost only so stone ovens never drain wood drops. Manual hand-loading is unchanged.
 
 ## Example assembly line
 
@@ -48,3 +49,4 @@ Acceptance uses the stationâ€™s own fuel item + `IsItemAllowed` conversion 
 - Does not vacuum unrelated junk (wrong item types are ignored)
 - Does not extend beyond ~4 m
 - Does not auto-output finished bars into chests
+- Does not pull wood into stone ovens / cooking stations (Frost Foundry Liquid Frost only)

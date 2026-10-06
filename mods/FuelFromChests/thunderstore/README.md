@@ -18,6 +18,6 @@ Keeps kilns and smelters fed without constant hand-loading from adjacent storage
 2. Place chests with fuel/ore within ~4 m of the station intakes.
 3. Let the station run, or press E empty-handed to top it up.
 
-Kiln auto-feed uses plain wood only (fine/core wood stay manual).
+Kiln auto-feed uses plain wood only (fine/core wood stay manual). Frost Foundry pulls Liquid Frost; stone ovens do not auto-drain wood.
 
 Client-side convenience — works on any server.

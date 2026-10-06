@@ -14,17 +14,20 @@ Processing stations pull **fuel** and **inputs** from chests within ~4 m of thei
 | Intake points | Ore switch, fuel/wood switch, windmill hub, piece origin |
 | Why so tight | Avoids draining a distant storage room |
 
-## Structures (all use Valheim's `Smelter` component)
+## Structures
 
-| Structure | Takes as fuel | Takes as input (â€œoreâ€) | Produces |
-|-----------|---------------|-------------------------|----------|
-| Charcoal kiln | â€” | **Plain wood only** (auto-feed never takes fine/core/â€¦) | Coal |
-| Smelter | Coal | Tin / copper / iron scrap / silver / â€¦ | Ingots |
-| Blast furnace | Coal | Black metal scrap, flametal ore, â€¦ | Black metal / flametal |
-| Windmill | â€” | Barley | Barley flour |
-| Spinning wheel | â€” | Flax | Linen thread |
+Most stations use Valheim's `Smelter` component. Frost Foundry is a `CookingStation` that only auto-pulls Liquid Frost.
 
-Exact accept lists come from each prefabâ€™s `m_fuelItem` and `m_conversion` â€” anything vanilla (or a mod) wires into that station works, **except** kiln auto-feed skips premium woods (see below).
+| Structure | Takes as fuel | Takes as input ("ore"/cast) | Produces |
+|-----------|---------------|------------------------------|----------|
+| Charcoal kiln | — | **Plain wood only** (auto-feed never takes fine/core/…) | Coal |
+| Smelter | Coal | Tin / copper / iron scrap / silver / … | Ingots |
+| Blast furnace | Coal | Black metal scrap, flametal ore, … | Black metal / flametal |
+| Windmill | — | Barley | Barley flour |
+| Spinning wheel | — | Flax | Linen thread |
+| Frost Foundry | **Liquid Frost only** | Casts (manual) | Hardened items |
+
+Exact accept lists come from each prefab's `m_fuelItem` and `m_conversion` — anything vanilla (or a mod) wires into a covered station works, **except** kiln auto-feed skips premium woods (see below). Stone ovens and other wood-burning cooking stations are never auto-fed.
 
 ### Kiln wood (auto-feed)
 
@@ -73,3 +76,4 @@ Exact accept lists come from each prefabâ€™s `m_fuelItem` and `m_conversion
 - Does not empty finished products into chests
 - Does not use the ~20 m craft radius
 - Does not auto-feed fine wood, core wood, or other premium woods into kilns
+- Does not pull wood into stone ovens / cooking stations (Frost Foundry Liquid Frost only)

@@ -12,12 +12,37 @@ namespace TeflonTed.FuelFromGround
     {
         public const string PluginGuid = "com.teflonted.valheim.fuelfromground";
         public const string PluginName = "Teflon Ted's Fuel From Ground";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.2.0";
 
         private void Awake()
         {
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PluginGuid);
             Logger.LogInfo($"{PluginName} {PluginVersion} loaded");
+        }
+
+        internal static void ConsumeOneFromDrop(ItemDrop drop)
+        {
+            var nview = drop.GetComponent<ZNetView>();
+            if (drop.m_itemData.m_stack <= 1)
+            {
+                if (nview != null && nview.IsValid())
+                {
+                    nview.Destroy();
+                }
+                else if (ZNetScene.instance != null)
+                {
+                    ZNetScene.instance.Destroy(drop.gameObject);
+                }
+                else
+                {
+                    Object.Destroy(drop.gameObject);
+                }
+
+                return;
+            }
+
+            drop.m_itemData.m_stack--;
+            AccessTools.Method(typeof(ItemDrop), "Save")?.Invoke(drop, null);
         }
     }
 
@@ -69,34 +94,64 @@ namespace TeflonTed.FuelFromGround
                     continue;
                 }
 
-                ConsumeOneFromDrop(drop);
+                Plugin.ConsumeOneFromDrop(drop);
                 break; // one per tick
             }
         }
+    }
 
-        private static void ConsumeOneFromDrop(ItemDrop drop)
+    /// <summary>
+    /// Frost Foundry only: suck Liquid Frost drops. Wood-burning ovens are ignored.
+    /// </summary>
+    [HarmonyPatch(typeof(CookingStation), "UpdateCooking")]
+    internal static class CookingStation_UpdateCooking_Patch
+    {
+        private static readonly Dictionary<int, float> LastRun = new Dictionary<int, float>();
+
+        private static void Postfix(CookingStation __instance, ZNetView ___m_nview)
         {
-            var nview = drop.GetComponent<ZNetView>();
-            if (drop.m_itemData.m_stack <= 1)
+            if (__instance == null || ___m_nview == null || !___m_nview.IsValid() || !___m_nview.IsOwner())
             {
-                if (nview != null && nview.IsValid())
-                {
-                    nview.Destroy();
-                }
-                else if (ZNetScene.instance != null)
-                {
-                    ZNetScene.instance.Destroy(drop.gameObject);
-                }
-                else
-                {
-                    Object.Destroy(drop.gameObject);
-                }
-
                 return;
             }
 
-            drop.m_itemData.m_stack--;
-            AccessTools.Method(typeof(ItemDrop), "Save")?.Invoke(drop, null);
+            if (!CookingStationLiquidFrost.UsesLiquidFrostFuel(__instance))
+            {
+                return;
+            }
+
+            int id = __instance.GetInstanceID();
+            if (LastRun.TryGetValue(id, out float last) && Time.time - last < 0.5f)
+            {
+                return;
+            }
+
+            LastRun[id] = Time.time;
+
+            if (CookingStationLiquidFrost.FuelRoom(__instance) <= 0)
+            {
+                return;
+            }
+
+            var drops = NearbyItemDrops.FindNearAny(
+                CookingStationLiquidFrost.IntakePositions(__instance),
+                Radii.FuelAdjacency);
+            foreach (var drop in drops)
+            {
+                if (drop?.m_itemData?.m_shared == null)
+                {
+                    continue;
+                }
+
+                if (drop.m_itemData.m_shared.m_name != CookingStationLiquidFrost.FrozenFuelSharedName)
+                {
+                    continue;
+                }
+
+                CookingStationLiquidFrost.AddOneFuel(__instance);
+                Plugin.ConsumeOneFromDrop(drop);
+                break;
+            }
         }
     }
 }

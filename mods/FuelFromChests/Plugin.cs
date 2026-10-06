@@ -12,7 +12,7 @@ namespace TeflonTed.FuelFromChests
     {
         public const string PluginGuid = "com.teflonted.valheim.fuelfromchests";
         public const string PluginName = "Teflon Ted's Fuel From Chests";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.2.0";
 
         private void Awake()
         {
@@ -358,6 +358,143 @@ namespace TeflonTed.FuelFromChests
             }
 
             return true;
+        }
+    }
+
+    /// <summary>
+    /// Frost Foundry only: pull Liquid Frost from nearby chests. Wood-burning ovens /
+    /// cooking stations are intentionally ignored.
+    /// </summary>
+    [HarmonyPatch(typeof(CookingStation), "UpdateCooking")]
+    internal static class CookingStation_UpdateCooking_Patch
+    {
+        private static readonly Dictionary<int, float> LastRun = new Dictionary<int, float>();
+
+        private static void Postfix(CookingStation __instance, ZNetView ___m_nview)
+        {
+            if (__instance == null || ___m_nview == null || !___m_nview.IsValid() || !___m_nview.IsOwner())
+            {
+                return;
+            }
+
+            if (!CookingStationLiquidFrost.UsesLiquidFrostFuel(__instance))
+            {
+                return;
+            }
+
+            int id = __instance.GetInstanceID();
+            if (LastRun.TryGetValue(id, out float last) && Time.time - last < 0.5f)
+            {
+                return;
+            }
+
+            LastRun[id] = Time.time;
+
+            if (CookingStationLiquidFrost.FuelRoom(__instance) <= 0)
+            {
+                return;
+            }
+
+            var chests = NearbyContainers.FindNearAny(
+                CookingStationLiquidFrost.IntakePositions(__instance),
+                Radii.FuelAdjacency);
+            if (NearbyContainers.TakeItem(chests, CookingStationLiquidFrost.FrozenFuelSharedName, 1) <= 0)
+            {
+                return;
+            }
+
+            CookingStationLiquidFrost.AddOneFuel(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingStation), nameof(CookingStation.CanUseItems))]
+    internal static class CookingStation_CanUseItems_Patch
+    {
+        private static bool Prefix(
+            CookingStation __instance,
+            Player player,
+            Switch switchRef,
+            ref bool __result)
+        {
+            if (__instance == null ||
+                player == null ||
+                switchRef == null ||
+                !CookingStationLiquidFrost.UsesLiquidFrostFuel(__instance) ||
+                __instance.m_addFuelSwitch == null ||
+                switchRef != __instance.m_addFuelSwitch)
+            {
+                return true;
+            }
+
+            if (CookingStationLiquidFrost.FuelRoom(__instance) <= 0)
+            {
+                return true;
+            }
+
+            if (player.GetInventory().HaveItem(CookingStationLiquidFrost.FrozenFuelSharedName))
+            {
+                return true;
+            }
+
+            var chests = NearbyContainers.FindNearAny(
+                CookingStationLiquidFrost.IntakePositions(__instance),
+                Radii.FuelAdjacency);
+            if (NearbyContainers.CountItem(chests, CookingStationLiquidFrost.FrozenFuelSharedName) > 0)
+            {
+                __result = true;
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingStation), "OnAddFuelSwitch")]
+    internal static class CookingStation_OnAddFuelSwitch_Patch
+    {
+        private static bool Prefix(
+            CookingStation __instance,
+            Humanoid user,
+            ItemDrop.ItemData item,
+            ref bool __result)
+        {
+            if (__instance == null ||
+                user == null ||
+                !CookingStationLiquidFrost.UsesLiquidFrostFuel(__instance))
+            {
+                return true;
+            }
+
+            if (item?.m_shared != null &&
+                item.m_shared.m_name != CookingStationLiquidFrost.FrozenFuelSharedName)
+            {
+                return true;
+            }
+
+            if (CookingStationLiquidFrost.FuelRoom(__instance) <= 0)
+            {
+                return true;
+            }
+
+            if (user.GetInventory().HaveItem(CookingStationLiquidFrost.FrozenFuelSharedName))
+            {
+                return true;
+            }
+
+            var chests = NearbyContainers.FindNearAny(
+                CookingStationLiquidFrost.IntakePositions(__instance),
+                Radii.FuelAdjacency);
+            if (NearbyContainers.TakeItem(chests, CookingStationLiquidFrost.FrozenFuelSharedName, 1) <= 0)
+            {
+                return true;
+            }
+
+            CookingStationLiquidFrost.AddOneFuel(__instance);
+            user.Message(
+                MessageHud.MessageType.Center,
+                "$msg_added " + CookingStationLiquidFrost.FrozenFuelSharedName);
+            __result = true;
+            return false;
         }
     }
 }
