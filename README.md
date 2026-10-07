@@ -6,32 +6,7 @@
 
 Single-purpose [BepInEx](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) QoL mods for Valheim. Pick only what you need; almost no config.
 
-```mermaid
-flowchart TB
-  subgraph suite [Teflon Ted suite]
-    Common[TeflonTed.Common]
-    Craft[Craft From Chests]
-    Sort[Sort Into Chests]
-    SortG[Sort From Ground]
-    FuelC[Fuel From Chests]
-    FuelG[Fuel From Ground]
-    Fog[No Ocean Fog]
-    Mist[Thinner Mist]
-    Lights[Eternal Lights]
-    Repair[Auto Repair]
-    Float[Everything Floats]
-    Eat[Auto Eat]
-    Farm[Farm Grid]
-    Fish[Fighting Fish]
-    Sure[Sure Potential]
-    NoDrop[No Drop Death]
-  end
-  Craft --> Common
-  Sort --> Common
-  SortG --> Common
-  FuelC --> Common
-  FuelG --> Common
-```
+Published on Thunderstore: [TeflonTed](https://thunderstore.io/c/valheim/p/TeflonTed/).
 
 ## Mods
 
