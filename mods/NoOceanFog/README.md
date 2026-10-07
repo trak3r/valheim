@@ -1,5 +1,7 @@
 # Teflon Ted's No Ocean Fog
 
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's No Ocean Fog" />
+
 > **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).

@@ -1,10 +1,12 @@
 # Teflon Ted's Sure Potential
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Sure Potential" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Forge of Potential (and any other upgrader station) always succeeds â€” no more 65% gamble, no broken gear.
+Forge of Potential (and any other upgrader station) always succeeds — no more 65% gamble, no broken gear.
 
 ## Behavior
 
@@ -20,7 +22,7 @@ Forge of Potential (and any other upgrader station) always succeeds â€” no 
 
 | Feature | Here? |
 |---------|-------|
-| Free upgrades / skip idol cost | No â€” still consumes the idol |
+| Free upgrades / skip idol cost | No — still consumes the idol |
 | Change upgrade duration or level caps | No |
 | Normal forge / workbench / cauldron crafts | No |
 | Config | No |

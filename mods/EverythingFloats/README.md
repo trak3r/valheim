@@ -1,10 +1,12 @@
 # Teflon Ted's Everything Floats
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Everything Floats" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Dropped items get Valheimâ€™s `Floating` component so they bob on water instead of sinking.
+Dropped items get Valheim’s `Floating` component so they bob on water instead of sinking.
 
 ## Behavior
 

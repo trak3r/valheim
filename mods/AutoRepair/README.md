@@ -1,10 +1,12 @@
 # Teflon Ted's Auto Repair
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Auto Repair" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Open a crafting station and every **worn** inventory item that station can repair is fixed immediately â€” same rules as the vanilla repair hammer.
+Open a crafting station and every **worn** inventory item that station can repair is fixed immediately — same rules as the vanilla repair hammer.
 
 ## Behavior
 

@@ -1,6 +1,8 @@
 # Teflon Ted's Sort Into Chests
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Sort Into Chests" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
@@ -32,7 +34,7 @@ Same idea as craft-from-chests: accessible `Container` pieces in range.
 | Wood / reinforced / black metal chests | Yes |
 | Personal chest | If you have access |
 | Cart / ship holds | If in range |
-| Obliterator | Included on this hotkey (extra scan) â€” still only accepts items it already â€œmatchesâ€ via normal deposit rules |
+| Obliterator | Included on this hotkey (extra scan) — still only accepts items it already “matches” via normal deposit rules |
 
 ## Input ignored when
 
@@ -47,6 +49,6 @@ Inventory can stay open; sorting still runs.
 
 ## What it does **not** do
 
-- Does not dump into empty chests (no â€œfirst empty slotâ€ fill)
+- Does not dump into empty chests (no “first empty slot” fill)
 - Does not touch hotbar or equipped items
 - Does not pull from chests into your bag

@@ -1,10 +1,12 @@
 # Teflon Ted's Fuel From Chests
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Fuel From Chests" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Processing stations pull **fuel** and **inputs** from chests within ~4 m of their intakes â€” automatically while running, and when you press **E** with empty hands.
+Processing stations pull **fuel** and **inputs** from chests within ~4 m of their intakes — automatically while running, and when you press **E** with empty hands.
 
 ## Range
 
@@ -63,7 +65,7 @@ Exact accept lists come from each prefab's `m_fuelItem` and `m_conversion` — a
 |------|----------|
 | Auto (`UpdateSmelter`) | While the station has room, pull 1 matching item from a nearby chest every ~0.5 s |
 | Manual E (empty bags) | Vanilla would refuse; this mod takes 1 from a nearby chest instead |
-| Manual E (item in bags) | Vanilla path unchanged â€” inventory wins |
+| Manual E (item in bags) | Vanilla path unchanged — inventory wins |
 
 ## Priority
 

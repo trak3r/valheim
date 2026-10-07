@@ -1,10 +1,12 @@
 # Teflon Ted's Thinner Mist
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Thinner Mist" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Thins Mistlands volumetric mist and clears a bit more space near you â€” same idea as [Azumatt Foglands](https://thunderstore.io/c/valheim/p/Azumatt/Foglands/), without day/night veils, weather scaling, config, or demister gameplay changes.
+Thins Mistlands volumetric mist and clears a bit more space near you — same idea as [Azumatt Foglands](https://thunderstore.io/c/valheim/p/Azumatt/Foglands/), without day/night veils, weather scaling, config, or demister gameplay changes.
 
 ## Behavior
 
@@ -12,7 +14,7 @@ Thins Mistlands volumetric mist and clears a bit more space near you â€” sa
 |--------|--------|
 | Target | Mistlands `ParticleMist` only (`Heightmap.Biome.Mistlands`) |
 | Thickness | Emission rates scaled to **40%** of vanilla |
-| Visibility | `m_minDistance` Ã— **1.35** (clearer pocket around the player) |
+| Visibility | `m_minDistance` × **1.35** (clearer pocket around the player) |
 | Look | Soft gray particles, lower alpha, fewer max particles |
 | Config | None |
 
@@ -33,12 +35,12 @@ Thins Mistlands volumetric mist and clears a bit more space near you â€” sa
 | Day/night fog cycle | No |
 | Storm/rain multipliers | No |
 | Toggle to remove all mist | No |
-| Change `IsInMist` / demister detection | No â€” wisps still clear mist the same way |
-| Ocean / Plains Misty whiteout weather | No â€” use [No Ocean Fog](../NoOceanFog) for that |
+| Change `IsInMist` / demister detection | No — wisps still clear mist the same way |
+| Ocean / Plains Misty whiteout weather | No — use [No Ocean Fog](../NoOceanFog) for that |
 | Config / server sync | No |
 
 ## Tips
 
 - Client-side visual tweak; everyone who wants the thinner mist should run the mod.
-- Stacks fine with [No Ocean Fog](../NoOceanFog) â€” that strips Misty weather, this only touches Mistlands particles.
-- Inspired by Azumattâ€™s Foglands daytime defaults, fixed in place with no knobs.
+- Stacks fine with [No Ocean Fog](../NoOceanFog) — that strips Misty weather, this only touches Mistlands particles.
+- Inspired by Azumatt’s Foglands daytime defaults, fixed in place with no knobs.

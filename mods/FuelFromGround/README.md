@@ -1,10 +1,12 @@
 # Teflon Ted's Fuel From Ground
 
-> **One mod, one job** â€” no kitchen-sink configs or feature creep.
+<img src="thunderstore/icon.png" width="128" alt="Teflon Ted's Fuel From Ground" />
+
+> **One mod, one job** — no kitchen-sink configs or feature creep.
 
 Developer notes for this mod. The Thunderstore / player-facing page lives in [`thunderstore/README.md`](thunderstore/README.md).
 
-Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck matching **item drops** off the ground within ~4 m â€” for kiln â†’ smelter style assembly lines.
+Same processing stations as [Fuel From Chests](../FuelFromChests), but they suck matching **item drops** off the ground within ~4 m — for kiln → smelter style assembly lines.
 
 ## Range
 
@@ -42,7 +44,7 @@ Acceptance uses the station's own fuel item + `IsItemAllowed` conversion list �
 |-----|------------|
 | Fuel From Chests | Containers |
 | Fuel From Ground | World item drops |
-| Both installed | Both â€” chests and floor |
+| Both installed | Both — chests and floor |
 
 ## What it does **not** do
 
